@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/madslun/Documents/Programmering/U_look_stunning/stun/main.cpp
+iostream
+-
+vector
+-
+iomanip
+-
+bitset
+-
+
