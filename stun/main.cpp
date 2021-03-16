@@ -14,6 +14,47 @@ public:
     uint32_t read32(std::vector<uint8_t> &collectedData);
 
     bool cookieChecker(uint32_t cookie);
+
+    void messageChecker(std::vector<uint8_t> &collectedData);
+
+    bool checkUsername(std::vector<uint8_t> &collectedData, uint16_t length);
+
+    bool checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length);
+
+    enum AttributeType {
+        TYPE_NONE            = 0x0000,
+        MAPPED_ADDR          = 0x0001,
+        CHANGE_REQ           = 0x0003,
+        USERNAME             = 0x0006,
+        MESSAGE_INTEGRITY    = 0x0008,
+        ERR_CODE             = 0x0009,
+        UNKNOWN_ATTRIBUTES   = 0x000a,
+        CHANNEL_NUMBER       = 0x000c,
+        LIFETIME             = 0x000d,
+        XOR_PEER_ADDR        = 0x0012,
+        DATA                 = 0x0013,
+        REALM                = 0x0014,
+        NONCE                = 0x0015,
+        XOR_RELAY_ADDRESS    = 0x0016,
+        REQ_ADDRESS_FAMILY   = 0x0017,
+        EVEN_PORT            = 0x0018,
+        REQUESTED_TRANSPORT  = 0x0019,
+        DONT_FRAGMENT        = 0x001a,
+        XOR_MAPPED_ADDRESS   = 0x0020,
+        RESERVATION_TOKEN    = 0x0022,
+        PRIORITY             = 0x0024,
+        USE_CANDIDATE        = 0x0025,
+        PADDING              = 0x0026,
+        RESPONSE_PORT        = 0x0027,
+        SOFTWARE             = 0x8022,
+        ALTERNATE_SERVER     = 0x8023,
+        FINGERPRINT          = 0x8028,
+        ICE_CONTROLLED       = 0x8029,
+        ICE_CONTROLLING      = 0x802a,
+        RESPONSE_ORIGIN      = 0x802b,
+        OTHER_ADDRESS        = 0x802c,
+    };
+
 };
 
 /**
@@ -29,12 +70,118 @@ bool Reader::cookieChecker(uint32_t cookie) {
     return false;
 }
 
+
+/**
+ * Checks if a username is saved on the server
+ * @param collectedData, vector containing the message sent
+ * @param length, length of the username
+ * @return true if username exists
+ */
+bool Reader::checkUsername(std::vector<uint8_t> &collectedData, uint16_t length) {
+    //TODO: Is this the right way to do it? What about long term?
+    int a = length;
+    std::string inputUsername= "";
+    for(int i = 0; i < a; i++) {
+        inputUsername+= collectedData[i];
+    }
+    //To find amount of bytes to delete
+    int z = (length + (4-(length %4)))/4;
+    collectedData.erase(collectedData.begin(), collectedData.begin()+z);
+
+    //As you can see, security is not our biggest priority in this task
+    const char* users[] = {"madslun", "simonje", "larsbost"};
+    //That O(n) function
+    for(auto& a : users) {
+        if(inputUsername == a)
+            return true;
+    }
+
+    return false;
+}
+
+
+bool Reader::checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length) {
+    return false;
+}
+
+/**
+ * Checks the rest of the message for which atrributes exists in the message
+ * @param collectedData, Vector with rest of the message
+ */
+void Reader::messageChecker(std::vector<uint8_t> &collectedData) {
+    //TODO: Create array,
+    // read second byte,
+    // set true on place in array equal to second byte,
+    // read fourth byte,
+    // skip size equal to fourth byte
+    uint16_t type;
+    uint16_t length;
+    bool a = true;
+    while(a) {
+//TODO REMEMBER TO REMOVE THIS
+        type = read16(collectedData);
+        length = read16(collectedData);
+
+
+        switch(type) {
+            case USERNAME: {
+                //TODO: username stuff check here
+                if(!(checkUsername(collectedData, length))) {
+                    std::cout << "Username does not exist on server." << std::endl;
+                    a = false;
+                    return;
+                }
+            }
+
+            case MESSAGE_INTEGRITY: {
+                //TODO: Integrity stuff here
+                //With the exception of the FINGERPRINT
+                //attribute, which appears after MESSAGE-INTEGRITY, agents MUST ignore
+                //all other attributes that follow MESSAGE-INTEGRITY.
+            }
+
+            case FINGERPRINT: {
+                //TODO: Fingerprint stuff here
+            }
+
+            case XOR_MAPPED_ADDRESS: {
+
+            }
+
+            default: {
+                std::cout << "default will come here" << std::endl;
+            }
+        }
+    }
+
+    /*
+     Comprehension-required range (0x0000-0x7FFF):
+     0x0000: (Reserved)
+     0x0001: MAPPED-ADDRESS
+     0x0002: (Reserved; was RESPONSE-ADDRESS)
+     0x0003: (Reserved; was CHANGE-ADDRESS)
+     0x0004: (Reserved; was SOURCE-ADDRESS)
+     0x0005: (Reserved; was CHANGED-ADDRESS)
+     0x0006: USERNAME
+     0x0007: (Reserved; was PASSWORD)
+     0x0008: MESSAGE-INTEGRITY
+     0x0009: ERROR-CODE
+     0x000A: UNKNOWN-ATTRIBUTES
+     0x000B: (Reserved; was REFLECTED-FROM)
+     0x0014: REALM
+     0x0015: NONCE
+     0x0020: XOR-MAPPED-ADDRESS
+
+   Comprehension-optional range (0x8000-0xFFFF)
+     0x8022: SOFTWARE
+     0x8023: ALTERNATE-SERVER
+     0x8028: FINGERPRINT
+         */
+
+}
+
+
 //TODO: Take in the request
-//  Check the two first bits that it is 0x00
-//  Parse 16 first bits to type
-//  Parse 16 next bits to length
-//  Parse 32 next bits to cookie
-//  Parse 96 next bits to transaction id
 //  Parse the actual data?
 /**
  * Takes in the request sent to the stun server and parses it
@@ -66,6 +213,7 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
     uint16_t length = read16(collectedData);
     uint32_t cookie = read32(collectedData);
 
+    //Transaction ID is saved for sending back
     uint32_t transID[3];
     for(int i = 0; i < 3; i++) {
         transID[i] = read32(collectedData);
@@ -73,8 +221,12 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
 
     if(!cookieChecker(cookie)) {
         std::cout << "cookie was not right" << std::endl;
+        return;
     }
 
+    messageChecker(collectedData);
+
+/*
 
     std::bitset<16> x(type);
     std::cout << x << '\n';
@@ -82,9 +234,6 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
     std::cout << z << '\n';
     std::bitset<32> y(cookie);
     std::cout << y << '\n';
-/*
-    std::bitset<16> x(result);
-   std::cout << x << '\n';
 
 
    for (auto& el : collectedData)
@@ -137,6 +286,8 @@ uint8_t Reader::read8(std::vector<uint8_t> &collectedData) {
     return collectedData[0];
 }
 
+
+
 int main() {
     /**
      * This request uses the following parameters:
@@ -183,8 +334,8 @@ int main() {
             "\x6e\x00\x01\xff"
             "\x80\x29\x00\x08"
             "\x93\x2f\xf9\xb1\x51\x26\x3b\x36"
-            "\x00\x06\x00\x09"
-            "\x65\x76\x74\x6a\x3a\x68\x36\x76\x59\x20\x20\x20"
+            "\x00\x06\x00\x07"
+            "\x6d\x61\x64\x73\x6c\x75\x6e\x20"
             "\x00\x08\x00\x14"
             "\x9a\xea\xa7\x0c\xbf\xd8\xcb\x56\x78\x1e\xf2\xb5"
             "\xb2\xd3\xf2\x49\xc1\xb5\x71\xa2"
