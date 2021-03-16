@@ -6,9 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/Users/madslun/Documents/Programmering/U_look_stunning/stun/main.cpp
+D:/Programmering/NTNU/C++/Nettverk/Prosjekt/U_look_stunning/stun/main.cpp
 iostream
 -
 vector
+-
+iomanip
+-
+bitset
 -
 
