@@ -69,6 +69,12 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
     uint32_t cookie = read32(collectedData);
     collectedData.erase(collectedData.begin(), collectedData.begin()+4);
 
+    uint32_t transID[3];
+    for(int i = 0; i < 3; i++) {
+        transID[i] = read32(collectedData);
+        collectedData.erase(collectedData.begin(), collectedData.begin()+4);
+    }
+
     if(!cookieChecker(cookie)) {
         std::cout << "cookie was not right" << std::endl;
     }
