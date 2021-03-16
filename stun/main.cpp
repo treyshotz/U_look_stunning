@@ -7,11 +7,11 @@ class Reader {
 public:
     void validateData(uint8_t* data, uint32_t datasize);
 
-    uint8_t read8(std::vector<uint8_t> collectedData);
+    uint8_t read8(std::vector<uint8_t> &collectedData);
 
-    uint16_t read16(std::vector<uint8_t> collectedData);
+    uint16_t read16(std::vector<uint8_t> &collectedData);
 
-    uint32_t read32(std::vector<uint8_t> collectedData);
+    uint32_t read32(std::vector<uint8_t> &collectedData);
 
     bool cookieChecker(uint32_t cookie);
 };
@@ -61,18 +61,14 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
     if ( (data[0] & 0xC0) != 0x00) {
         return;
     }
-    //TODO: Plz use pointer instead or delete in a better way at least
+
     uint16_t type = read16(collectedData);
-    collectedData.erase(collectedData.begin(), collectedData.begin()+2);
     uint16_t length = read16(collectedData);
-    collectedData.erase(collectedData.begin(), collectedData.begin()+2);
     uint32_t cookie = read32(collectedData);
-    collectedData.erase(collectedData.begin(), collectedData.begin()+4);
 
     uint32_t transID[3];
     for(int i = 0; i < 3; i++) {
         transID[i] = read32(collectedData);
-        collectedData.erase(collectedData.begin(), collectedData.begin()+4);
     }
 
     if(!cookieChecker(cookie)) {
@@ -80,13 +76,13 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
     }
 
 
-    /*std::bitset<16> x(type);
+    std::bitset<16> x(type);
     std::cout << x << '\n';
     std::bitset<16> z(length);
     std::cout << z << '\n';
     std::bitset<32> y(cookie);
     std::cout << y << '\n';
-
+/*
     std::bitset<16> x(result);
    std::cout << x << '\n';
 
@@ -104,11 +100,12 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
  * @param collectedData the vector to read from
  * @return 16 first bits
  */
-uint16_t Reader::read16(std::vector<uint8_t> collectedData) {
+uint16_t Reader::read16(std::vector<uint8_t> &collectedData) {
     //TODO: Error handling
 
     uint16_t result = 0;
     result = ((uint16_t)collectedData[0] << 8) | collectedData[1];
+    collectedData.erase(collectedData.begin(), collectedData.begin()+2);
     return result;
 }
 
@@ -119,11 +116,12 @@ uint16_t Reader::read16(std::vector<uint8_t> collectedData) {
  * @param collectedData the vector to read from
  * @return 32 first bits
  */
-uint32_t Reader::read32(std::vector<uint8_t> collectedData) {
+uint32_t Reader::read32(std::vector<uint8_t> &collectedData) {
     //TODO: Error handling
 
     uint32_t result = 0;
     result = ((uint16_t)collectedData[0] << 24) | (collectedData[1] << 16)| (collectedData[2] << 8) | collectedData[3];
+    collectedData.erase(collectedData.begin(), collectedData.begin()+4);
     return result;
 }
 
@@ -134,7 +132,7 @@ uint32_t Reader::read32(std::vector<uint8_t> collectedData) {
  * @param collectedData, the vector to read from
  * @return 8 first bits
  */
-uint8_t Reader::read8(std::vector<uint8_t> collectedData) {
+uint8_t Reader::read8(std::vector<uint8_t> &collectedData) {
     //TODO: Error handling
     return collectedData[0];
 }
