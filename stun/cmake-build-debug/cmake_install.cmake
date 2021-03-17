@@ -1,8 +1,8 @@
-# Install script for directory: D:/Programmering/NTNU/C++/Nettverk/Prosjekt/U_look_stunning/stun
+# Install script for directory: /Users/madslun/Documents/Programmering/U_look_stunning/stun
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/stun")
+  set(CMAKE_INSTALL_PREFIX "/usr/local")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/Programmering/NTNU/C++/Nettverk/Prosjekt/U_look_stunning/stun/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/madslun/Documents/Programmering/U_look_stunning/stun/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

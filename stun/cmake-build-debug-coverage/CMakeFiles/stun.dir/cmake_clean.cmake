@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/stun.dir/Message.cpp.o"
   "CMakeFiles/stun.dir/main.cpp.o"
   "stun"
   "stun.pdb"

@@ -143,6 +143,33 @@ stun/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/build
 .PHONY : stun/fast
 
+Message.o: Message.cpp.o
+
+.PHONY : Message.o
+
+# target to build an object file
+Message.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/Message.cpp.o
+.PHONY : Message.cpp.o
+
+Message.i: Message.cpp.i
+
+.PHONY : Message.i
+
+# target to preprocess a source file
+Message.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/Message.cpp.i
+.PHONY : Message.cpp.i
+
+Message.s: Message.cpp.s
+
+.PHONY : Message.s
+
+# target to generate assembly for a file
+Message.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/Message.cpp.s
+.PHONY : Message.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -179,6 +206,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... stun"
+	@echo "... Message.o"
+	@echo "... Message.i"
+	@echo "... Message.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

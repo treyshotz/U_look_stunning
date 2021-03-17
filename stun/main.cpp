@@ -2,6 +2,7 @@
 #include <vector>
 #include <iomanip>
 #include <bitset>
+#include "Message.h"
 
 class Reader {
 public:
@@ -15,12 +16,16 @@ public:
 
     bool cookieChecker(uint32_t cookie);
 
-    void messageChecker(std::vector<uint8_t> &collectedData);
+    void messageChecker(std::vector<uint8_t> &collectedData, Message message);
 
     bool checkUsername(std::vector<uint8_t> &collectedData, uint16_t length);
 
     bool checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length);
 
+    bool checkXorMapped(std::vector<uint8_t> &collectedData, uint16_t length, uint32_t cookie);
+
+    //These are the different attributes we found on all three of the stun pages made by ietf
+    //Not all of these will be completely implemented due to lack of time
     enum AttributeType {
         TYPE_NONE            = 0x0000,
         MAPPED_ADDR          = 0x0001,
@@ -65,6 +70,7 @@ public:
 bool Reader::cookieChecker(uint32_t cookie) {
     std::bitset<32> a(std::string("00100001000100101010010001000010"));
     std::bitset<32> b(cookie);
+
     if(a == b)
         return true;
     return false;
@@ -104,21 +110,44 @@ bool Reader::checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length
     return false;
 }
 
+
+bool Reader::checkXorMapped(std::vector<uint8_t> &collectedData, uint16_t length, uint32_t cookie) {
+    uint16_t xxxandFamily = read16(collectedData);
+    uint16_t xPort = read16(collectedData);
+
+    std::bitset<16> x(xPort);
+    std::bitset<32> z(cookie);
+    std::bitset<16> y;
+    std::cout << x << '\n';
+    std::cout << z << '\n';
+
+
+    int j = 32;
+    int k = 16;
+    for(int i = 0; i < 16; i++) {
+        y[k-i] = z[j-i] ^ x[k-i];
+    }
+    std::cout << y << std::endl;
+
+
+    return false;
+}
+
+
 /**
  * Checks the rest of the message for which atrributes exists in the message
  * @param collectedData, Vector with rest of the message
  */
-void Reader::messageChecker(std::vector<uint8_t> &collectedData) {
-    //TODO: Create array,
-    // read second byte,
-    // set true on place in array equal to second byte,
-    // read fourth byte,
-    // skip size equal to fourth byte
+void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message) {
+
     uint16_t type;
     uint16_t length;
     bool a = true;
+
+    //TODO: change while loop to iterate only until the message is finished
     while(a) {
-//TODO REMEMBER TO REMOVE THIS
+        //Due to lack of time we can't implement all of the different attributes
+
         type = read16(collectedData);
         length = read16(collectedData);
 
@@ -129,6 +158,9 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData) {
                 if(!(checkUsername(collectedData, length))) {
                     std::cout << "Username does not exist on server." << std::endl;
                     a = false;
+                    //If the message is a request, the server MUST reject the request
+                    //with an error response.  This response MUST use an error code
+                    //of 401 (Unauthorized).
                     return;
                 }
             }
@@ -145,7 +177,8 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData) {
             }
 
             case XOR_MAPPED_ADDRESS: {
-
+                std::cout << "sjekker xor " << std::endl;
+                checkXorMapped(collectedData, length, message.getCookie());
             }
 
             default: {
@@ -191,9 +224,13 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData) {
 void Reader::validateData(uint8_t* data, uint32_t datasize) {
 //Develop based on the example given by ietf , https://tools.ietf.org/html/rfc5769
 
+//TODO: Because of the hmac sha1 fingerprint we need to store the message somewhere instead of deleting it
 
 //Store the data from input here
 std::vector<uint8_t> collectedData;
+
+//Create a message for sending it back
+Message message{};
 
 //Checks that data and datasize is present
 if(!data || !datasize) {
@@ -209,9 +246,12 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
         return;
     }
 
-    uint16_t type = read16(collectedData);
-    uint16_t length = read16(collectedData);
-    uint32_t cookie = read32(collectedData);
+    //uint16_t type = read16(collectedData);
+    //uint16_t length = read16(collectedData);
+    //uint32_t cookie = read32(collectedData);
+    message.setType(read16(collectedData));
+    message.setLength(read16(collectedData));
+    message.setCookie(read32(collectedData));
 
     //Transaction ID is saved for sending back
     uint32_t transID[3];
@@ -219,12 +259,12 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
         transID[i] = read32(collectedData);
     }
 
-    if(!cookieChecker(cookie)) {
+    if(!cookieChecker(message.getCookie())) {
         std::cout << "cookie was not right" << std::endl;
         return;
     }
 
-    messageChecker(collectedData);
+    messageChecker(collectedData, message);
 
 /*
 
@@ -285,7 +325,6 @@ uint8_t Reader::read8(std::vector<uint8_t> &collectedData) {
     //TODO: Error handling
     return collectedData[0];
 }
-
 
 
 int main() {

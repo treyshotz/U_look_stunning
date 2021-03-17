@@ -1,8 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/stun.dir/main.cpp.obj"
-  "libstun.dll.a"
-  "stun.exe"
-  "stun.exe.manifest"
+  "CMakeFiles/stun.dir/Message.cpp.o"
+  "CMakeFiles/stun.dir/main.cpp.o"
+  "stun"
   "stun.pdb"
 )
 

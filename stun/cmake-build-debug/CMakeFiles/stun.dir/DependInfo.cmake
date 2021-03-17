@@ -4,9 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "D:/Programmering/NTNU/C++/Nettverk/Prosjekt/U_look_stunning/stun/main.cpp" "D:/Programmering/NTNU/C++/Nettverk/Prosjekt/U_look_stunning/stun/cmake-build-debug/CMakeFiles/stun.dir/main.cpp.obj"
+  "/Users/madslun/Documents/Programmering/U_look_stunning/stun/Message.cpp" "/Users/madslun/Documents/Programmering/U_look_stunning/stun/cmake-build-debug/CMakeFiles/stun.dir/Message.cpp.o"
+  "/Users/madslun/Documents/Programmering/U_look_stunning/stun/main.cpp" "/Users/madslun/Documents/Programmering/U_look_stunning/stun/cmake-build-debug/CMakeFiles/stun.dir/main.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH

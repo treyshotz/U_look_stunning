@@ -94,12 +94,12 @@ clean: CMakeFiles/stun.dir/clean
 CMakeFiles/stun.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/madslun/Documents/Programmering/U_look_stunning/stun/cmake-build-debug-coverage/CMakeFiles --progress-num=1,2 "Built target stun"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/madslun/Documents/Programmering/U_look_stunning/stun/cmake-build-debug-coverage/CMakeFiles --progress-num=1,2,3 "Built target stun"
 .PHONY : CMakeFiles/stun.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/stun.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/madslun/Documents/Programmering/U_look_stunning/stun/cmake-build-debug-coverage/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/madslun/Documents/Programmering/U_look_stunning/stun/cmake-build-debug-coverage/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/stun.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/madslun/Documents/Programmering/U_look_stunning/stun/cmake-build-debug-coverage/CMakeFiles 0
 .PHONY : CMakeFiles/stun.dir/rule
