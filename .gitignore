@@ -32,6 +32,5 @@
 *.app
 
 # Folders
-$GIT_DIR/stun/cmake-build-debug
-$GIT_DIR/stund/cmake-build-debug-coverage
-
+**/cmake-build-debug
+**/cmake-build-debug-coverage
