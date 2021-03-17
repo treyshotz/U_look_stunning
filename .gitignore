@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# Folders
+$GIT_DIR/stun/cmake-build-debug
+$GIT_DIR/stund/cmake-build-debug-coverage
+
