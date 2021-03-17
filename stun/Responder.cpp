@@ -8,16 +8,17 @@
 #include <cinttypes>
 #include <bitset>
 #include <iostream>
+#include <zlib.h>
 
 void Responder::buildMessage(std::uint32_t *transactionId) {
     Message message{};
 
-    //setHeader(message);
-    //setTransactionId(message, transactionId);
+    setHeader(message);
+    setTransactionId(message, transactionId);
     setSoftware(message);
-    //setXorAdress(message);
-    //setHmacIntegrity(message);
-    //setFingerprint(message);
+    setXorAdress(message);
+    setHmacIntegrity(message);
+    setFingerprint(message);
 
 
 }
@@ -47,6 +48,8 @@ void Responder::setHeader(Message &message) {
  * @param transactionId receives the transactionID from received request
  */
 void Responder::setTransactionId(Message &message, uint32_t transactionId[]) {
+    //TODO: Validate that array is not empty
+    if(transactionId)
     for(int i = 0; i < 3; i++) {
         message.setTransactionId(transactionId[i], i);
     }

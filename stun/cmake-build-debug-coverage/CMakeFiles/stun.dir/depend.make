@@ -9,6 +9,7 @@ CMakeFiles/stun.dir/Responder.cpp.o: ../Responder.cpp
 CMakeFiles/stun.dir/Responder.cpp.o: ../Responder.h
 
 CMakeFiles/stun.dir/main.cpp.o: ../Message.h
+CMakeFiles/stun.dir/main.cpp.o: ../Reader.h
 CMakeFiles/stun.dir/main.cpp.o: ../Responder.h
 CMakeFiles/stun.dir/main.cpp.o: ../main.cpp
 

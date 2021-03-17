@@ -4,65 +4,8 @@
 #include <bitset>
 #include "Message.h"
 #include "Responder.h"
+#include "Reader.h"
 
-class Reader {
-public:
-    void validateData(uint8_t *data, uint32_t datasize);
-
-    uint8_t read8(std::vector<uint8_t> &collectedData);
-
-    uint16_t read16(std::vector<uint8_t> &collectedData);
-
-    uint32_t read32(std::vector<uint8_t> &collectedData);
-
-    bool cookieChecker(uint32_t cookie);
-
-    void messageChecker(std::vector<uint8_t> &collectedData, Message message);
-
-    bool checkUsername(std::vector<uint8_t> &collectedData, uint16_t length);
-
-    bool checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length);
-
-    //These are the different attributes we found on all three of the stun pages made by ietf
-    //Not all of these will be completely implemented due to lack of time
-    enum AttributeType {
-        //Comprehension-required range (0x0000-0x7FFF):
-        TYPE_NONE = 0x0000,
-        MAPPED_ADDR = 0x0001,
-        CHANGE_REQ = 0x0003,
-        USERNAME = 0x0006,
-        MESSAGE_INTEGRITY = 0x0008,
-        ERR_CODE = 0x0009,
-        UNKNOWN_ATTRIBUTES = 0x000a,
-        CHANNEL_NUMBER = 0x000c,
-        LIFETIME = 0x000d,
-        XOR_PEER_ADDR = 0x0012,
-        DATA = 0x0013,
-        REALM = 0x0014,
-        NONCE = 0x0015,
-        XOR_RELAY_ADDRESS = 0x0016,
-        REQ_ADDRESS_FAMILY = 0x0017,
-        EVEN_PORT = 0x0018,
-        REQUESTED_TRANSPORT = 0x0019,
-        DONT_FRAGMENT = 0x001a,
-        XOR_MAPPED_ADDRESS = 0x0020,
-        RESERVATION_TOKEN = 0x0022,
-        PRIORITY = 0x0024,
-        USE_CANDIDATE = 0x0025,
-        PADDING = 0x0026,
-        RESPONSE_PORT = 0x0027,
-
-        //Comprehension-optional range (0x8000-0xFFFF)
-        SOFTWARE = 0x8022,
-        ALTERNATE_SERVER = 0x8023,
-        FINGERPRINT = 0x8028,
-        ICE_CONTROLLED = 0x8029,
-        ICE_CONTROLLING = 0x802a,
-        RESPONSE_ORIGIN = 0x802b,
-        OTHER_ADDRESS = 0x802c,
-    };
-
-};
 
 /**
  * Validates the cookie
@@ -160,16 +103,6 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
                 break;
             }
 
-            //TODO: I think this is only set by the server
-            case XOR_MAPPED_ADDRESS: {
-//                std::cout << "XOR skjer her" << std::endl;
-//                printf("typeAndLength %02hx\n", typeAndLength);
-//                for (auto& el : collectedData)
-//                    printf("%02hhx ", el);
-//                std::cout << '\n';
-//                checkXorMapped(collectedData, length, message.getCookie());
-//                break;
-            }
 
             default: {
                 std::cout << "default will come here" << std::endl;
@@ -177,36 +110,9 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
             }
         }
     }
-
-    /*
-     Comprehension-required range (0x0000-0x7FFF):
-     0x0000: (Reserved)
-     0x0001: MAPPED-ADDRESS
-     0x0002: (Reserved; was RESPONSE-ADDRESS)
-     0x0003: (Reserved; was CHANGE-ADDRESS)
-     0x0004: (Reserved; was SOURCE-ADDRESS)
-     0x0005: (Reserved; was CHANGED-ADDRESS)
-     0x0006: USERNAME
-     0x0007: (Reserved; was PASSWORD)
-     0x0008: MESSAGE-INTEGRITY
-     0x0009: ERROR-CODE
-     0x000A: UNKNOWN-ATTRIBUTES
-     0x000B: (Reserved; was REFLECTED-FROM)
-     0x0014: REALM
-     0x0015: NONCE
-     0x0020: XOR-MAPPED-ADDRESS
-
-   Comprehension-optional range (0x8000-0xFFFF)
-     0x8022: SOFTWARE
-     0x8023: ALTERNATE-SERVER
-     0x8028: FINGERPRINT
-         */
-
 }
 
 
-//TODO: Take in the request
-//  Parse the actual data?
 /**
  * Takes in the request sent to the stun server and parses it
  * @param data, the data that will be validated and parsed
@@ -237,11 +143,9 @@ void Reader::validateData(uint8_t *data, uint32_t datasize) {
         return;
     }
 
-    //uint16_t typeAndLength = read16(collectedData);
-    //uint16_t length = read16(collectedData);
-    //uint32_t cookie = read32(collectedData);
-    message.setType(read16(collectedData));
-    message.setLength(read16(collectedData));
+    uint16_t typeAndLength = read16(collectedData);
+    uint16_t length = read16(collectedData);
+    uint32_t cookie = read32(collectedData);
     message.setCookie(read32(collectedData));
 
     //Transaction ID is saved for sending back
@@ -250,13 +154,12 @@ void Reader::validateData(uint8_t *data, uint32_t datasize) {
         transID[i] = read32(collectedData);
     }
 
-    if (!cookieChecker(message.getCookie())) {
+    if (!cookieChecker(cookie)) {
         std::cout << "cookie was not right" << std::endl;
         return;
     }
 
     Responder responder{};
-    std::cout << "Starter respinder" << std::endl;
     responder.buildMessage(transID);
     //messageChecker(collectedData, message);
 
@@ -303,8 +206,7 @@ uint32_t Reader::read32(std::vector<uint8_t> &collectedData) {
     //TODO: Error handling
 
     uint32_t result = 0;
-    result =
-            ((uint16_t) collectedData[0] << 24) | (collectedData[1] << 16) | (collectedData[2] << 8) | collectedData[3];
+    result = ((uint16_t) collectedData[0] << 24) | (collectedData[1] << 16) | (collectedData[2] << 8) | collectedData[3];
     collectedData.erase(collectedData.begin(), collectedData.begin() + 4);
     return result;
 }
@@ -358,7 +260,6 @@ int main() {
        80 28 00 04     FINGERPRINT attribute header
        e5 7a 3b cf     CRC32 fingerprint
     */
-
     const unsigned char req[] =
             "\x00\x01\x00\x58"
             "\x21\x12\xa4\x42"

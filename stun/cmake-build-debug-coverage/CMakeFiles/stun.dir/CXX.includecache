@@ -19,6 +19,10 @@ Responder.h
 /Users/madslun/Documents/Programmering/U_look_stunning/stun/Responder.h
 cinttypes
 -
+bitset
+-
+iostream
+-
 
 /Users/madslun/Documents/Programmering/U_look_stunning/stun/Responder.h
 cstdint
