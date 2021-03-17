@@ -36,7 +36,8 @@ bool Reader::checkUsername(std::vector<uint8_t> &collectedData, uint16_t length)
         inputUsername += collectedData[i];
     }
     //To find amount of bytes to delete
-    int z = (length + (4 - (length % 4))) / 4;
+    int b = 4 - (length % 4);
+    int z = length + b;
     collectedData.erase(collectedData.begin(), collectedData.begin() + z);
 
     //As you can see, security is not our biggest priority in this task
@@ -58,30 +59,47 @@ bool Reader::checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length
 
 
 
+
+    int j = 32;
+    int k = 16;
+    for (int i = 0; i < 16; i++) {
+        y[k - i] = z[j - i] ^ x[k - i];
+    }
+    std::cout << y << std::endl;
+
+    //TODO: Convert the xor'd bits to "network byte order"
+    // find out whether this means big endian or little endian.
+
+    return false;
+}
+
+
 /**
  * Checks the rest of the message for which atrributes exists in the message
  * @param collectedData, Vector with rest of the message
  */
 void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message) {
-
     uint16_t type;
     uint16_t length;
-    bool a = true;
+    int teller = collectedData.size();
 
-    //TODO: change while loop to iterate only until the message is finished
-    while (a) {
+    while(teller >= 4) {
+
         //Due to lack of time we can't implement all of the different attributes
-
         type = read16(collectedData);
         length = read16(collectedData);
+        std::cout<<"lengde: " << length <<std::endl;
 
+        int b = 4 - (length % 4) ;
+        int z = length + b;
+        teller = teller -z;
 
         switch (type) {
             case USERNAME: {
                 //TODO: username stuff check here
                 if (!(checkUsername(collectedData, length))) {
                     std::cout << "Username does not exist on server." << std::endl;
-                    a = false;
+                   // a = false;
                     //If the message is a request, the server MUST reject the request
                     //with an error response.  This response MUST use an error code
                     //of 401 (Unauthorized).
@@ -95,21 +113,53 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
                 //With the exception of the FINGERPRINT
                 //attribute, which appears after MESSAGE-INTEGRITY, agents MUST ignore
                 //all other attributes that follow MESSAGE-INTEGRITY.
+                checkMsgIngrty(collectedData, length);
+                collectedData.erase(collectedData.begin(), collectedData.begin() + length);
+
                 break;
+
             }
 
             case FINGERPRINT: {
                 //TODO: Fingerprint stuff here
+                collectedData.erase(collectedData.begin(), collectedData.begin() + length);
                 break;
             }
 
 
             default: {
-                std::cout << "default will come here" << std::endl;
+                std::cout << "" << std::endl;
+                collectedData.erase(collectedData.begin(), collectedData.begin() + length);
                 break;
             }
         }
     }
+
+    /*
+     Comprehension-required range (0x0000-0x7FFF):
+     0x0000: (Reserved)
+     0x0001: MAPPED-ADDRESS
+     0x0002: (Reserved; was RESPONSE-ADDRESS)
+     0x0003: (Reserved; was CHANGE-ADDRESS)
+     0x0004: (Reserved; was SOURCE-ADDRESS)
+     0x0005: (Reserved; was CHANGED-ADDRESS)
+     0x0006: USERNAME
+     0x0007: (Reserved; was PASSWORD)
+     0x0008: MESSAGE-INTEGRITY
+     0x0009: ERROR-CODE
+     0x000A: UNKNOWN-ATTRIBUTES
+     0x000B: (Reserved; was REFLECTED-FROM)
+     0x0014: REALM
+     0x0015: NONCE
+     0x0020: XOR-MAPPED-ADDRESS
+
+   Comprehension-optional range (0x8000-0xFFFF)
+     0x8022: SOFTWARE
+     0x8023: ALTERNATE-SERVER
+     0x8028: FINGERPRINT
+         */
+
+
 }
 
 
@@ -279,7 +329,10 @@ int main() {
             "\xe5\x7a\x3b\xcf";
 
     Reader reader;
-    reader.validateData((uint8_t *) req, sizeof(req));
+    reader.validateData((uint8_t *) req, sizeof(req)-1);
 
+    std::cout << "Hello, World!" <<std::endl;
     return 0;
 }
+
+
