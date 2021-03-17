@@ -24,9 +24,13 @@ public:
 
     const uint32_t *getTransactionId() const;
 
+    void setTransactionId(uint32_t t, int i);
+
     uint32_t getSoftwareHeader() const;
 
     void setSoftwareHeader(uint32_t softwareHeader);
+
+    void setServerName(uint32_t t, int i);
 
     const uint32_t *getServerName() const;
 

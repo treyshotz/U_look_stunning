@@ -4,6 +4,11 @@
 CMakeFiles/stun.dir/Message.cpp.o: ../Message.cpp
 CMakeFiles/stun.dir/Message.cpp.o: ../Message.h
 
+CMakeFiles/stun.dir/Responder.cpp.o: ../Message.h
+CMakeFiles/stun.dir/Responder.cpp.o: ../Responder.cpp
+CMakeFiles/stun.dir/Responder.cpp.o: ../Responder.h
+
 CMakeFiles/stun.dir/main.cpp.o: ../Message.h
+CMakeFiles/stun.dir/main.cpp.o: ../Responder.h
 CMakeFiles/stun.dir/main.cpp.o: ../main.cpp
 

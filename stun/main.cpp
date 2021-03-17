@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <bitset>
 #include "Message.h"
+#include "Responder.h"
 
 class Reader {
 public:
@@ -279,7 +280,10 @@ void Reader::validateData(uint8_t *data, uint32_t datasize) {
         return;
     }
 
-    messageChecker(collectedData, message);
+    Responder responder{};
+    std::cout << "Starter respinder" << std::endl;
+    responder.buildMessage(transID);
+    //messageChecker(collectedData, message);
 
 /*
 
@@ -401,6 +405,5 @@ int main() {
     Reader reader;
     reader.validateData((uint8_t *) req, sizeof(req));
 
-    std::cout << "Hello, World!" << std::endl;
     return 0;
 }

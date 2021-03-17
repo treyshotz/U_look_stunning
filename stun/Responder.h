@@ -15,7 +15,7 @@ public:
 
 private:
     void setHeader(Message &message);
-    void setTransactionId(Message &message);
+    void setTransactionId(Message &message, uint32_t transactionId[]);
     void setSoftware(Message &message);
     void setXorAdress(Message &message);
     void setHmacIntegrity(Message &message);

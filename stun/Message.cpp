@@ -83,3 +83,11 @@ uint32_t Message::getFingerprint() const {
 void Message::setFingerprint(uint32_t fingerprint) {
     Message::fingerprint = fingerprint;
 }
+
+void Message::setTransactionId(uint32_t t, int i) {
+    Message::transactionID[i] = t;
+}
+
+void Message::setServerName(uint32_t t, int i) {
+    Message::serverName[i] = t;
+}
