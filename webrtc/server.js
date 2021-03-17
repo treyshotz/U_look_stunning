@@ -25,23 +25,10 @@ app.get('/:room', (req, res) => {
     res.render('index.ejs', { roomId: req.params.room})
 })
 
-io.sockets.on('connection', (client) => {
-    console.log('Client connected: ' + client.id)
-
-    client.on('offer', (details) => {
-        client.broadcast('offer', details)
-        console.log('Client: ' + client.id + ' offers ' + JSON.stringify(details))
+io.on('connection', (client) => {
+    client.on('join', (roomId, userId) => {
+        console.log(roomId + " " + userId)
+        client.join(roomId)
+        client.to(roomId).emit('joined', userId)
     })
-    
-    client.on('answer', (details) => {
-        client.broadcast('answer', details)
-        console.log('Client: ' + client.id + ' responds with ' + JSON.stringify(details))
-    })
-
-    client.on('candidate', (details) => {
-        client.broadcast('candidate', details)
-        console.log('Candidate: ' + JSON.stringify(details))
-    })
-
-    client.broadcast.emit('createoffer', {})
 })
