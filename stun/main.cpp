@@ -23,11 +23,10 @@ public:
 
     bool checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length);
 
-    bool checkXorMapped(std::vector<uint8_t> &collectedData, uint16_t length, uint32_t cookie);
-
     //These are the different attributes we found on all three of the stun pages made by ietf
     //Not all of these will be completely implemented due to lack of time
     enum AttributeType {
+        //Comprehension-required range (0x0000-0x7FFF):
         TYPE_NONE = 0x0000,
         MAPPED_ADDR = 0x0001,
         CHANGE_REQ = 0x0003,
@@ -52,6 +51,8 @@ public:
         USE_CANDIDATE = 0x0025,
         PADDING = 0x0026,
         RESPONSE_PORT = 0x0027,
+
+        //Comprehension-optional range (0x8000-0xFFFF)
         SOFTWARE = 0x8022,
         ALTERNATE_SERVER = 0x8023,
         FINGERPRINT = 0x8028,
@@ -112,32 +113,6 @@ bool Reader::checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length
 }
 
 
-bool Reader::checkXorMapped(std::vector<uint8_t> &collectedData, uint16_t length, uint32_t cookie) {
-    uint16_t xxxandFamily = read16(collectedData);
-    std::bitset<16> a(xxxandFamily);
-    std::cout << a << std::endl;
-    uint16_t xPort = read16(collectedData);
-
-    std::bitset<16> x(xPort);
-    std::bitset<32> z(cookie);
-    std::bitset<16> y;
-    //std::cout << x << '\n';
-    //std::cout << z << '\n';
-
-
-    int j = 32;
-    int k = 16;
-    for (int i = 0; i < 16; i++) {
-        y[k - i] = z[j - i] ^ x[k - i];
-    }
-    std::cout << y << std::endl;
-
-    //TODO: Convert the xor'd bits to "network byte order"
-    // find out whether this means big endian or little endian.
-
-
-    return false;
-}
 
 
 /**
@@ -187,13 +162,13 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
 
             //TODO: I think this is only set by the server
             case XOR_MAPPED_ADDRESS: {
-                std::cout << "XOR skjer her" << std::endl;
-                printf("type %02hx\n", type);
-                for (auto& el : collectedData)
-                    printf("%02hhx ", el);
-                std::cout << '\n';
-                checkXorMapped(collectedData, length, message.getCookie());
-                break;
+//                std::cout << "XOR skjer her" << std::endl;
+//                printf("typeAndLength %02hx\n", typeAndLength);
+//                for (auto& el : collectedData)
+//                    printf("%02hhx ", el);
+//                std::cout << '\n';
+//                checkXorMapped(collectedData, length, message.getCookie());
+//                break;
             }
 
             default: {
@@ -262,7 +237,7 @@ void Reader::validateData(uint8_t *data, uint32_t datasize) {
         return;
     }
 
-    //uint16_t type = read16(collectedData);
+    //uint16_t typeAndLength = read16(collectedData);
     //uint16_t length = read16(collectedData);
     //uint32_t cookie = read32(collectedData);
     message.setType(read16(collectedData));
@@ -287,7 +262,7 @@ void Reader::validateData(uint8_t *data, uint32_t datasize) {
 
 /*
 
-    std::bitset<16> x(type);
+    std::bitset<16> x(typeAndLength);
     std::cout << x << '\n';
     std::bitset<16> z(length);
     std::cout << z << '\n';
@@ -355,7 +330,7 @@ int main() {
        Username:  "evtj:h6vY" (without quotes)
        Password:  "VOkJxbRl1RmTxUk/WvJxBt" (without quotes)
 
-       00 01 00 58     Request type and message length
+       00 01 00 58     Request typeAndLength and message length
        21 12 a4 42     Magic cookie
        b7 e7 a7 01  }
        bc 34 d6 86  }  Transaction ID

@@ -10,13 +10,9 @@
 
 class Message {
 public:
-    uint16_t getType() const;
+    uint32_t getTypeAndLength() const;
 
-    void setType(uint16_t type);
-
-    uint16_t getLength() const;
-
-    void setLength(uint16_t length);
+    void setTypeAndLength(uint32_t typeAndLength);
 
     uint32_t getCookie() const;
 
@@ -55,7 +51,7 @@ public:
     void setFingerprint(uint32_t fingerprint);
 
 
-    /*01 01 00 3c     Response type and message length
+    /*01 01 00 3c     Response typeAndLength and message length
      21 12 a4 42     Magic cookie
      b7 e7 a7 01  }
      bc 34 d6 86  }  Transaction ID
@@ -77,8 +73,7 @@ public:
      c0 7d 4c 96     CRC32 fingerprint
      */
 public:
-    std::uint16_t type;
-    std::uint16_t length;
+    std::uint32_t typeAndLength;
     std::uint32_t cookie;
     std::uint32_t transactionID[3];
     std::uint32_t softwareHeader;

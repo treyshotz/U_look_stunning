@@ -4,22 +4,6 @@
 
 #include "Message.h"
 
-uint16_t Message::getType() const {
-    return type;
-}
-
-void Message::setType(uint16_t type) {
-    Message::type = type;
-}
-
-uint16_t Message::getLength() const {
-    return length;
-}
-
-void Message::setLength(uint16_t length) {
-    Message::length = length;
-}
-
 uint32_t Message::getCookie() const {
     return cookie;
 }
@@ -91,3 +75,12 @@ void Message::setTransactionId(uint32_t t, int i) {
 void Message::setServerName(uint32_t t, int i) {
     Message::serverName[i] = t;
 }
+
+uint32_t Message::getTypeAndLength() const {
+    return typeAndLength;
+}
+
+void Message::setTypeAndLength(uint32_t typeAndLength) {
+    Message::typeAndLength = typeAndLength;
+}
+
