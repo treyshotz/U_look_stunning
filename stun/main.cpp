@@ -57,23 +57,6 @@ bool Reader::checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length
 }
 
 
-
-
-
-    int j = 32;
-    int k = 16;
-    for (int i = 0; i < 16; i++) {
-        y[k - i] = z[j - i] ^ x[k - i];
-    }
-    std::cout << y << std::endl;
-
-    //TODO: Convert the xor'd bits to "network byte order"
-    // find out whether this means big endian or little endian.
-
-    return false;
-}
-
-
 /**
  * Checks the rest of the message for which atrributes exists in the message
  * @param collectedData, Vector with rest of the message
