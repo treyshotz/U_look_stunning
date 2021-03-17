@@ -6,7 +6,7 @@
 
 class Reader {
 public:
-    void validateData(uint8_t* data, uint32_t datasize);
+    void validateData(uint8_t *data, uint32_t datasize);
 
     uint8_t read8(std::vector<uint8_t> &collectedData);
 
@@ -27,37 +27,37 @@ public:
     //These are the different attributes we found on all three of the stun pages made by ietf
     //Not all of these will be completely implemented due to lack of time
     enum AttributeType {
-        TYPE_NONE            = 0x0000,
-        MAPPED_ADDR          = 0x0001,
-        CHANGE_REQ           = 0x0003,
-        USERNAME             = 0x0006,
-        MESSAGE_INTEGRITY    = 0x0008,
-        ERR_CODE             = 0x0009,
-        UNKNOWN_ATTRIBUTES   = 0x000a,
-        CHANNEL_NUMBER       = 0x000c,
-        LIFETIME             = 0x000d,
-        XOR_PEER_ADDR        = 0x0012,
-        DATA                 = 0x0013,
-        REALM                = 0x0014,
-        NONCE                = 0x0015,
-        XOR_RELAY_ADDRESS    = 0x0016,
-        REQ_ADDRESS_FAMILY   = 0x0017,
-        EVEN_PORT            = 0x0018,
-        REQUESTED_TRANSPORT  = 0x0019,
-        DONT_FRAGMENT        = 0x001a,
-        XOR_MAPPED_ADDRESS   = 0x0020,
-        RESERVATION_TOKEN    = 0x0022,
-        PRIORITY             = 0x0024,
-        USE_CANDIDATE        = 0x0025,
-        PADDING              = 0x0026,
-        RESPONSE_PORT        = 0x0027,
-        SOFTWARE             = 0x8022,
-        ALTERNATE_SERVER     = 0x8023,
-        FINGERPRINT          = 0x8028,
-        ICE_CONTROLLED       = 0x8029,
-        ICE_CONTROLLING      = 0x802a,
-        RESPONSE_ORIGIN      = 0x802b,
-        OTHER_ADDRESS        = 0x802c,
+        TYPE_NONE = 0x0000,
+        MAPPED_ADDR = 0x0001,
+        CHANGE_REQ = 0x0003,
+        USERNAME = 0x0006,
+        MESSAGE_INTEGRITY = 0x0008,
+        ERR_CODE = 0x0009,
+        UNKNOWN_ATTRIBUTES = 0x000a,
+        CHANNEL_NUMBER = 0x000c,
+        LIFETIME = 0x000d,
+        XOR_PEER_ADDR = 0x0012,
+        DATA = 0x0013,
+        REALM = 0x0014,
+        NONCE = 0x0015,
+        XOR_RELAY_ADDRESS = 0x0016,
+        REQ_ADDRESS_FAMILY = 0x0017,
+        EVEN_PORT = 0x0018,
+        REQUESTED_TRANSPORT = 0x0019,
+        DONT_FRAGMENT = 0x001a,
+        XOR_MAPPED_ADDRESS = 0x0020,
+        RESERVATION_TOKEN = 0x0022,
+        PRIORITY = 0x0024,
+        USE_CANDIDATE = 0x0025,
+        PADDING = 0x0026,
+        RESPONSE_PORT = 0x0027,
+        SOFTWARE = 0x8022,
+        ALTERNATE_SERVER = 0x8023,
+        FINGERPRINT = 0x8028,
+        ICE_CONTROLLED = 0x8029,
+        ICE_CONTROLLING = 0x802a,
+        RESPONSE_ORIGIN = 0x802b,
+        OTHER_ADDRESS = 0x802c,
     };
 
 };
@@ -71,7 +71,7 @@ bool Reader::cookieChecker(uint32_t cookie) {
     std::bitset<32> a(std::string("00100001000100101010010001000010"));
     std::bitset<32> b(cookie);
 
-    if(a == b)
+    if (a == b)
         return true;
     return false;
 }
@@ -86,19 +86,19 @@ bool Reader::cookieChecker(uint32_t cookie) {
 bool Reader::checkUsername(std::vector<uint8_t> &collectedData, uint16_t length) {
     //TODO: Is this the right way to do it? What about long term?
     int a = length;
-    std::string inputUsername= "";
-    for(int i = 0; i < a; i++) {
-        inputUsername+= collectedData[i];
+    std::string inputUsername = "";
+    for (int i = 0; i < a; i++) {
+        inputUsername += collectedData[i];
     }
     //To find amount of bytes to delete
-    int z = (length + (4-(length %4)))/4;
-    collectedData.erase(collectedData.begin(), collectedData.begin()+z);
+    int z = (length + (4 - (length % 4))) / 4;
+    collectedData.erase(collectedData.begin(), collectedData.begin() + z);
 
     //As you can see, security is not our biggest priority in this task
-    const char* users[] = {"madslun", "simonje", "larsbost"};
+    const char *users[] = {"madslun", "simonje", "larsbost"};
     //That O(n) function
-    for(auto& a : users) {
-        if(inputUsername == a)
+    for (auto &a : users) {
+        if (inputUsername == a)
             return true;
     }
 
@@ -113,21 +113,26 @@ bool Reader::checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length
 
 bool Reader::checkXorMapped(std::vector<uint8_t> &collectedData, uint16_t length, uint32_t cookie) {
     uint16_t xxxandFamily = read16(collectedData);
+    std::bitset<16> a(xxxandFamily);
+    std::cout << a << std::endl;
     uint16_t xPort = read16(collectedData);
 
     std::bitset<16> x(xPort);
     std::bitset<32> z(cookie);
     std::bitset<16> y;
-    std::cout << x << '\n';
-    std::cout << z << '\n';
+    //std::cout << x << '\n';
+    //std::cout << z << '\n';
 
 
     int j = 32;
     int k = 16;
-    for(int i = 0; i < 16; i++) {
-        y[k-i] = z[j-i] ^ x[k-i];
+    for (int i = 0; i < 16; i++) {
+        y[k - i] = z[j - i] ^ x[k - i];
     }
     std::cout << y << std::endl;
+
+    //TODO: Convert the xor'd bits to "network byte order"
+    // find out whether this means big endian or little endian.
 
 
     return false;
@@ -145,24 +150,25 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
     bool a = true;
 
     //TODO: change while loop to iterate only until the message is finished
-    while(a) {
+    while (a) {
         //Due to lack of time we can't implement all of the different attributes
 
         type = read16(collectedData);
         length = read16(collectedData);
 
 
-        switch(type) {
+        switch (type) {
             case USERNAME: {
                 //TODO: username stuff check here
-                if(!(checkUsername(collectedData, length))) {
+                if (!(checkUsername(collectedData, length))) {
                     std::cout << "Username does not exist on server." << std::endl;
                     a = false;
                     //If the message is a request, the server MUST reject the request
                     //with an error response.  This response MUST use an error code
                     //of 401 (Unauthorized).
-                    return;
+
                 }
+                break;
             }
 
             case MESSAGE_INTEGRITY: {
@@ -170,19 +176,28 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
                 //With the exception of the FINGERPRINT
                 //attribute, which appears after MESSAGE-INTEGRITY, agents MUST ignore
                 //all other attributes that follow MESSAGE-INTEGRITY.
+                break;
             }
 
             case FINGERPRINT: {
                 //TODO: Fingerprint stuff here
+                break;
             }
 
+            //TODO: I think this is only set by the server
             case XOR_MAPPED_ADDRESS: {
-                std::cout << "sjekker xor " << std::endl;
+                std::cout << "XOR skjer her" << std::endl;
+                printf("type %02hx\n", type);
+                for (auto& el : collectedData)
+                    printf("%02hhx ", el);
+                std::cout << '\n';
                 checkXorMapped(collectedData, length, message.getCookie());
+                break;
             }
 
             default: {
                 std::cout << "default will come here" << std::endl;
+                break;
             }
         }
     }
@@ -221,28 +236,28 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
  * @param data, the data that will be validated and parsed
  * @param datasize, the size of the data that was sent
  */
-void Reader::validateData(uint8_t* data, uint32_t datasize) {
+void Reader::validateData(uint8_t *data, uint32_t datasize) {
 //Develop based on the example given by ietf , https://tools.ietf.org/html/rfc5769
 
 //TODO: Because of the hmac sha1 fingerprint we need to store the message somewhere instead of deleting it
 
 //Store the data from input here
-std::vector<uint8_t> collectedData;
+    std::vector<uint8_t> collectedData;
 
 //Create a message for sending it back
-Message message{};
+    Message message{};
 
 //Checks that data and datasize is present
-if(!data || !datasize) {
-    std::cout << "wrong with input data" << std::endl;
-    return;
-}
+    if (!data || !datasize) {
+        std::cout << "wrong with input data" << std::endl;
+        return;
+    }
 
 //Copies the data into collectedData vector
-std::copy(data, data+datasize, std::back_inserter(collectedData));
+    std::copy(data, data + datasize, std::back_inserter(collectedData));
 
 //Check if the first byte and hexidecimal C0 (1100 0000), aka the two first bits is not 0
-    if ( (data[0] & 0xC0) != 0x00) {
+    if ((data[0] & 0xC0) != 0x00) {
         return;
     }
 
@@ -255,11 +270,11 @@ std::copy(data, data+datasize, std::back_inserter(collectedData));
 
     //Transaction ID is saved for sending back
     uint32_t transID[3];
-    for(int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         transID[i] = read32(collectedData);
     }
 
-    if(!cookieChecker(message.getCookie())) {
+    if (!cookieChecker(message.getCookie())) {
         std::cout << "cookie was not right" << std::endl;
         return;
     }
@@ -293,8 +308,8 @@ uint16_t Reader::read16(std::vector<uint8_t> &collectedData) {
     //TODO: Error handling
 
     uint16_t result = 0;
-    result = ((uint16_t)collectedData[0] << 8) | collectedData[1];
-    collectedData.erase(collectedData.begin(), collectedData.begin()+2);
+    result = ((uint16_t) collectedData[0] << 8) | collectedData[1];
+    collectedData.erase(collectedData.begin(), collectedData.begin() + 2);
     return result;
 }
 
@@ -309,8 +324,9 @@ uint32_t Reader::read32(std::vector<uint8_t> &collectedData) {
     //TODO: Error handling
 
     uint32_t result = 0;
-    result = ((uint16_t)collectedData[0] << 24) | (collectedData[1] << 16)| (collectedData[2] << 8) | collectedData[3];
-    collectedData.erase(collectedData.begin(), collectedData.begin()+4);
+    result =
+            ((uint16_t) collectedData[0] << 24) | (collectedData[1] << 16) | (collectedData[2] << 8) | collectedData[3];
+    collectedData.erase(collectedData.begin(), collectedData.begin() + 4);
     return result;
 }
 
@@ -328,6 +344,7 @@ uint8_t Reader::read8(std::vector<uint8_t> &collectedData) {
 
 
 int main() {
+    //TODO: Move this to a seperate test file
     /**
      * This request uses the following parameters:
        Software name:  "STUN test client" (without quotes)
@@ -382,7 +399,7 @@ int main() {
             "\xe5\x7a\x3b\xcf";
 
     Reader reader;
-    reader.validateData((uint8_t*) req, sizeof(req));
+    reader.validateData((uint8_t *) req, sizeof(req));
 
     std::cout << "Hello, World!" << std::endl;
     return 0;

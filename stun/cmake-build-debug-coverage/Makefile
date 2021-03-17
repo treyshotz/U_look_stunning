@@ -170,6 +170,33 @@ Message.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/Message.cpp.s
 .PHONY : Message.cpp.s
 
+Responder.o: Responder.cpp.o
+
+.PHONY : Responder.o
+
+# target to build an object file
+Responder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/Responder.cpp.o
+.PHONY : Responder.cpp.o
+
+Responder.i: Responder.cpp.i
+
+.PHONY : Responder.i
+
+# target to preprocess a source file
+Responder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/Responder.cpp.i
+.PHONY : Responder.cpp.i
+
+Responder.s: Responder.cpp.s
+
+.PHONY : Responder.s
+
+# target to generate assembly for a file
+Responder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stun.dir/build.make CMakeFiles/stun.dir/Responder.cpp.s
+.PHONY : Responder.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -209,6 +236,9 @@ help:
 	@echo "... Message.o"
 	@echo "... Message.i"
 	@echo "... Message.s"
+	@echo "... Responder.o"
+	@echo "... Responder.i"
+	@echo "... Responder.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
