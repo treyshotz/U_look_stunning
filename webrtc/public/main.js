@@ -1,48 +1,70 @@
-var socket = io('/')
+var client = io('/')
 var peer = new Peer(undefined, {
-    host: '/',
-    port: '3000'
+    host: '10.24.0.245',
+    port: '443'
 })
+
 var videoContainer = document.getElementById("video-container")
 var myVideo = document.createElement('video')
 myVideo.muted = true
 
-peer.on('open', (id) => {
-    console.log(id)
-    if(!(id === null)){
-        socket.emit('join', ROOM, id)
-    }
-    else{
-        console.log("Did not get peer id")
-    }
-})
 
 var constraints = {
     video: 'true',
     audio: 'true'
 }
 
-navigator.mediaDevices.getUserMedia(constraints)
-.then(stream => {
-    addStreamToVideoObject(myVideo, stream)
+peer.on('open', id => {
+    console.log('Peer: ' + id)
+    if(!(id === null)){
+        client.emit('join', ROOM, id)
+    }
+    else{
+        console.log("Did not get peer id")
+    }
 
-    peer.on('call', call => {
-        call.answer(stream)
+
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then(stream => {
+        addStreamToVideoObject(myVideo, stream)
+
+        client.on('joined', userId => {
+            console.log("Socket joined room. Trying to connect to stream")
+            connectToNewStream(userId, stream)
+        })
     })
+    .catch(function(err) {
+        console.log(err)
+    });
+})
 
-    socket.on('joined', (userId) => {
-        console.log("Socket joined room. Trying to connect to stream")
-        connectToNewStream(userId, stream)
+client.on('disconnected', userId => {
+    console.log('Disconnected user with id: ' + userId)
+    videoContainer.removeChild(document.getElementById(userId))
+})
+
+peer.on('call', call => {
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then(stream => {
+        call.answer(stream)
+        var video = document.createElement('video')
+        video.setAttribute('id', call.peer)
+        console.log("Answered user with id: " + call.peer)
+        call.on('stream', stream => {
+            addStreamToVideoObject(video, stream)
+        })
+        call.on('close', () => {
+            video.remove()
+        })
     })
 })
-.catch(function(err) {
-    console.log(err)
-});
 
 function connectToNewStream(userId, stream){
     console.log("Calling " + userId)
     const call = peer.call(userId, stream)
     var video = document.createElement('video')
+    video.setAttribute('id', userId);
+    console.log('Calling user with id: ' + userId)
     call.on('stream', userVideoStream => {
         addStreamToVideoObject(video, userVideoStream)
     })

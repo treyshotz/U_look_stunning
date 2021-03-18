@@ -1,9 +1,7 @@
-var os = require('os')
 var express = require('express')
 var app = express()
 var http = require('http')
 var server = http.createServer(app)
-server.listen(3001)
 
 //For signaling
 var socketIo = require('socket.io')
@@ -30,5 +28,11 @@ io.on('connection', (client) => {
         console.log(roomId + " " + userId)
         client.join(roomId)
         client.to(roomId).emit('joined', userId)
+
+        client.on('disconnect', () => {
+            client.to(roomId).emit('disconnected', userId)
+        })
     })
 })
+
+server.listen(3000)
