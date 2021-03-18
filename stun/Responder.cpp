@@ -8,7 +8,7 @@
 #include <cinttypes>
 #include <bitset>
 #include <iostream>
-#include <zlib.h>
+//#include <zlib.h>
 
 void Responder::buildMessage(std::uint32_t *transactionId) {
     Message message{};

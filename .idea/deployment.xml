@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="Docker (57672a16-fc7d-467f-9a32-e95b3660f329)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/tmp.LmnwFdVflu" local="$PROJECT_DIR$/stun" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug-docker" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug-remote-host" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-docker" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="Remote Host (691cacf7-4977-440f-9d83-65573dcd4053)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/tmp.TXRMLxY9CX" local="$PROJECT_DIR$/stun" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug-remote-host" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-docker" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

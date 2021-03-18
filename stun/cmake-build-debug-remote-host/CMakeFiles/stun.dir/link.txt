@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/stun.dir/main.cpp.o CMakeFiles/stun.dir/Message.cpp.o CMakeFiles/stun.dir/Responder.cpp.o CMakeFiles/stun.dir/Server.cpp.o  -o stun 

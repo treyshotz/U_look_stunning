@@ -10,13 +10,16 @@
 # include <sys/socket.h>
 #endif
 
+
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <iostream>
-#include <libc.h>
+//#include <libc.h>
 
-
+#include <unistd.h>
+#include <string.h>
+#include <pthread.h>
 
 /*
    *
