@@ -3,7 +3,13 @@
 //
 
 #include "Server.h"
-#include <sys/socket.h>
+
+#ifdef __WIN32__
+# include <winsock2.h>
+#else
+# include <sys/socket.h>
+#endif
+
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
