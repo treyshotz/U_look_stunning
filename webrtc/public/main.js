@@ -1,6 +1,6 @@
 var client = io('/')
 var peer = new Peer(undefined, {
-    host: '10.24.0.245',
+    host: '/',
     port: '443'
 })
 
