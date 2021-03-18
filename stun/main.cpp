@@ -179,7 +179,6 @@ void Reader::validateData(uint8_t *data, uint32_t datasize) {
     uint16_t typeAndLength = read16(collectedData);
     uint16_t length = read16(collectedData);
     uint32_t cookie = read32(collectedData);
-    message.setCookie(read32(collectedData));
 
     //Transaction ID is saved for sending back
     uint32_t transID[3];
@@ -257,65 +256,65 @@ uint8_t Reader::read8(std::vector<uint8_t> &collectedData) {
 }
 
 
-int main() {
-    //TODO: Move this to a seperate test file
-    /**
-     * This request uses the following parameters:
-       Software name:  "STUN test client" (without quotes)
-       Username:  "evtj:h6vY" (without quotes)
-       Password:  "VOkJxbRl1RmTxUk/WvJxBt" (without quotes)
-
-       00 01 00 58     Request typeAndLength and message length
-       21 12 a4 42     Magic cookie
-       b7 e7 a7 01  }
-       bc 34 d6 86  }  Transaction ID
-       fa 87 df ae  }
-       80 22 00 10     SOFTWARE attribute header
-       53 54 55 4e  }
-       20 74 65 73  }  User-agent...
-       74 20 63 6c  }  ...name
-       69 65 6e 74  }
-       00 24 00 04     PRIORITY attribute header
-       6e 00 01 ff     ICE priority value
-       80 29 00 08     ICE-CONTROLLED attribute header
-       93 2f f9 b1  }  Pseudo-random tie breaker...
-       51 26 3b 36  }   ...for ICE control
-       00 06 00 09     USERNAME attribute header
-       65 76 74 6a  }
-       3a 68 36 76  }  Username (9 bytes) and padding (3 bytes)
-       59 20 20 20  }
-       00 08 00 14     MESSAGE-INTEGRITY attribute header
-       9a ea a7 0c  }
-       bf d8 cb 56  }
-       78 1e f2 b5  }  HMAC-SHA1 fingerprint
-       b2 d3 f2 49  }
-       c1 b5 71 a2  }
-       80 28 00 04     FINGERPRINT attribute header
-       e5 7a 3b cf     CRC32 fingerprint
-    */
-    const unsigned char req[] =
-            "\x00\x01\x00\x58"
-            "\x21\x12\xa4\x42"
-            "\xb7\xe7\xa7\x01\xbc\x34\xd6\x86\xfa\x87\xdf\xae"
-            "\x80\x22\x00\x10"
-            "STUN test client"
-            "\x00\x24\x00\x04"
-            "\x6e\x00\x01\xff"
-            "\x80\x29\x00\x08"
-            "\x93\x2f\xf9\xb1\x51\x26\x3b\x36"
-            "\x00\x06\x00\x07"
-            "\x6d\x61\x64\x73\x6c\x75\x6e\x20"
-            "\x00\x08\x00\x14"
-            "\x9a\xea\xa7\x0c\xbf\xd8\xcb\x56\x78\x1e\xf2\xb5"
-            "\xb2\xd3\xf2\x49\xc1\xb5\x71\xa2"
-            "\x80\x28\x00\x04"
-            "\xe5\x7a\x3b\xcf";
-
-    Reader reader;
-    reader.validateData((uint8_t *) req, sizeof(req)-1);
-
-    std::cout << "Hello, World!" <<std::endl;
-    return 0;
-}
-
+//int main() {
+//    //TODO: Move this to a seperate test file
+//    /**
+//     * This request uses the following parameters:
+//       Software name:  "STUN test client" (without quotes)
+//       Username:  "evtj:h6vY" (without quotes)
+//       Password:  "VOkJxbRl1RmTxUk/WvJxBt" (without quotes)
+//
+//       00 01 00 58     Request typeAndLength and message length
+//       21 12 a4 42     Magic cookie
+//       b7 e7 a7 01  }
+//       bc 34 d6 86  }  Transaction ID
+//       fa 87 df ae  }
+//       80 22 00 10     SOFTWARE attribute header
+//       53 54 55 4e  }
+//       20 74 65 73  }  User-agent...
+//       74 20 63 6c  }  ...name
+//       69 65 6e 74  }
+//       00 24 00 04     PRIORITY attribute header
+//       6e 00 01 ff     ICE priority value
+//       80 29 00 08     ICE-CONTROLLED attribute header
+//       93 2f f9 b1  }  Pseudo-random tie breaker...
+//       51 26 3b 36  }   ...for ICE control
+//       00 06 00 09     USERNAME attribute header
+//       65 76 74 6a  }
+//       3a 68 36 76  }  Username (9 bytes) and padding (3 bytes)
+//       59 20 20 20  }
+//       00 08 00 14     MESSAGE-INTEGRITY attribute header
+//       9a ea a7 0c  }
+//       bf d8 cb 56  }
+//       78 1e f2 b5  }  HMAC-SHA1 fingerprint
+//       b2 d3 f2 49  }
+//       c1 b5 71 a2  }
+//       80 28 00 04     FINGERPRINT attribute header
+//       e5 7a 3b cf     CRC32 fingerprint
+//    */
+//    const unsigned char req[] =
+//            "\x00\x01\x00\x58"
+//            "\x21\x12\xa4\x42"
+//            "\xb7\xe7\xa7\x01\xbc\x34\xd6\x86\xfa\x87\xdf\xae"
+//            "\x80\x22\x00\x10"
+//            "STUN test client"
+//            "\x00\x24\x00\x04"
+//            "\x6e\x00\x01\xff"
+//            "\x80\x29\x00\x08"
+//            "\x93\x2f\xf9\xb1\x51\x26\x3b\x36"
+//            "\x00\x06\x00\x07"
+//            "\x6d\x61\x64\x73\x6c\x75\x6e\x20"
+//            "\x00\x08\x00\x14"
+//            "\x9a\xea\xa7\x0c\xbf\xd8\xcb\x56\x78\x1e\xf2\xb5"
+//            "\xb2\xd3\xf2\x49\xc1\xb5\x71\xa2"
+//            "\x80\x28\x00\x04"
+//            "\xe5\x7a\x3b\xcf";
+//
+//    Reader reader;
+//    reader.validateData((uint8_t *) req, sizeof(req)-1);
+//
+//    std::cout << "Hello, World!" <<std::endl;
+//
+//    return 0;
+//}
 
