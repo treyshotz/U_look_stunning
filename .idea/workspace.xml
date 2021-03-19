@@ -32,13 +32,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c36ac85-a60b-48ab-859e-e4e25d6b52c0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile.remote-cpp-env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/Responder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/stun/Responder.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/Server.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/stun/Server.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeCache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/clion-log.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,9 +76,9 @@
     <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="stun" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="stun" TARGET_NAME="stun" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="stun" RUN_TARGET_NAME="stun">
@@ -102,6 +104,7 @@
       <workItem from="1615888989156" duration="4320000" />
       <workItem from="1615916226885" duration="1518000" />
       <workItem from="1615990110173" duration="13775000" />
+      <workItem from="1616166818305" duration="887000" />
     </task>
     <servers />
   </component>
@@ -133,42 +136,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1616083559270" />
-    <state width="1877" height="324" key="GridCell.Tab.0.bottom" timestamp="1616100565281">
+    <state width="1877" height="378" key="GridCell.Tab.0.bottom" timestamp="1616103396731">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="324" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1616100565281" />
-    <state width="1877" height="324" key="GridCell.Tab.0.center" timestamp="1616100565281">
+    <state width="1877" height="378" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1616103396731" />
+    <state width="1877" height="378" key="GridCell.Tab.0.center" timestamp="1616103396731">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="324" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1616100565281" />
-    <state width="1877" height="324" key="GridCell.Tab.0.left" timestamp="1616100565281">
+    <state width="1877" height="378" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1616103396731" />
+    <state width="1877" height="378" key="GridCell.Tab.0.left" timestamp="1616103396731">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="324" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1616100565281" />
-    <state width="1877" height="324" key="GridCell.Tab.0.right" timestamp="1616100565281">
+    <state width="1877" height="378" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1616103396731" />
+    <state width="1877" height="378" key="GridCell.Tab.0.right" timestamp="1616103396731">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="324" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1616100565281" />
-    <state width="1877" height="378" key="GridCell.Tab.1.bottom" timestamp="1616084887796">
+    <state width="1877" height="378" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1616103396731" />
+    <state width="1877" height="378" key="GridCell.Tab.1.bottom" timestamp="1616103396731">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="378" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1616084887796" />
-    <state width="1877" height="378" key="GridCell.Tab.1.center" timestamp="1616084887796">
+    <state width="1877" height="378" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1616103396731" />
+    <state width="1877" height="378" key="GridCell.Tab.1.center" timestamp="1616103396731">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="378" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1616084887796" />
-    <state width="1877" height="378" key="GridCell.Tab.1.left" timestamp="1616084887796">
+    <state width="1877" height="378" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1616103396731" />
+    <state width="1877" height="378" key="GridCell.Tab.1.left" timestamp="1616103396731">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="378" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1616084887796" />
-    <state width="1877" height="378" key="GridCell.Tab.1.right" timestamp="1616084887796">
+    <state width="1877" height="378" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1616103396731" />
+    <state width="1877" height="378" key="GridCell.Tab.1.right" timestamp="1616103396731">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="378" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1616084887796" />
-    <state x="461" y="165" key="SettingsEditor" timestamp="1616100782990">
+    <state width="1877" height="378" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1616103396731" />
+    <state x="461" y="165" key="SettingsEditor" timestamp="1616167040494">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1616100782990" />
+    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1616167040494" />
     <state x="859" y="250" key="ftp.server.browser" timestamp="1616098294061">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

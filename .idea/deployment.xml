@@ -8,9 +8,12 @@
             <mapping deploy="/tmp/tmp.LmnwFdVflu" local="$PROJECT_DIR$/stun" />
           </mappings>
           <excludedPaths>
-            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug-docker" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug-remote-host" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-docker" />
             <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug-remote-host" />
             <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug-docker" />
             <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-docker" />
           </excludedPaths>
         </serverdata>
@@ -21,6 +24,9 @@
             <mapping deploy="/tmp/tmp.TXRMLxY9CX" local="$PROJECT_DIR$/stun" />
           </mappings>
           <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug-remote-host" />
+            <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-docker" />
             <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug-remote-host" />
             <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-debug" />
             <excludedPath local="true" path="$PROJECT_DIR$/stun/cmake-build-docker" />
