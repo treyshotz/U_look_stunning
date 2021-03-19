@@ -1,7 +1,13 @@
 var client = io('/')
 var peer = new Peer(undefined, {
     host: '/',
-    port: '443'
+    port: '443',
+    config: {
+        'iceServers': [
+            { url: 'stun:stun1.l.google.com:19302' },
+        ]
+    }
+
 })
 
 var videoContainer = document.getElementById("video-container")

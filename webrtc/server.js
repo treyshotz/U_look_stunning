@@ -1,7 +1,13 @@
 var express = require('express')
 var app = express()
-var http = require('http')
-var server = http.createServer(app)
+var fs = require('fs')
+var https = require('https')
+var server = https.createServer({
+    key: fs.readFileSync('cert/key.pem'),
+    cert: fs.readFileSync('cert/cert.pem')
+    },
+    app
+)
 
 //For signaling
 var socketIo = require('socket.io')
