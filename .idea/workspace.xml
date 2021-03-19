@@ -31,35 +31,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c36ac85-a60b-48ab-859e-e4e25d6b52c0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CMakeCCompiler.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CMakeCCompiler.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CMakeCXXCompiler.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CMakeSystem.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CMakeSystem.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/3.10.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/clion-environment.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/cmake.check_cache" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/cmake.check_cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/feature_tests.c" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/feature_tests.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/feature_tests.cxx" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/feature_tests.cxx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/progress.marks" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/flags.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/link.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/progress.make" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/stun.dir/progress.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/stun.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/stun.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeCache.txt" afterDir="false" />
-    </list>
+    <list default="true" id="6c36ac85-a60b-48ab-859e-e4e25d6b52c0" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,6 +40,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug-Remote Host" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -122,7 +95,7 @@
       <workItem from="1615916226885" duration="1518000" />
       <workItem from="1615990110173" duration="13775000" />
       <workItem from="1616166818305" duration="1325000" />
-      <workItem from="1616170605395" duration="18000" />
+      <workItem from="1616170605395" duration="577000" />
     </task>
     <servers />
   </component>
