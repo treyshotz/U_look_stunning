@@ -31,17 +31,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c36ac85-a60b-48ab-859e-e4e25d6b52c0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-debug-remote-host/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/stun/cmake-build-docker/CMakeFiles/clion-log.txt" afterDir="false" />
-    </list>
+    <list default="true" id="6c36ac85-a60b-48ab-859e-e4e25d6b52c0" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -104,7 +94,7 @@
       <workItem from="1615888989156" duration="4320000" />
       <workItem from="1615916226885" duration="1518000" />
       <workItem from="1615990110173" duration="13775000" />
-      <workItem from="1616166818305" duration="887000" />
+      <workItem from="1616166818305" duration="1325000" />
     </task>
     <servers />
   </component>
