@@ -62,6 +62,7 @@ void Server::startServer() {
         return;
     }
 
+    printf("IP address is: %s\n", inet_ntoa(server_addr.sin_addr));
     std::cout << "Server has started on port " << port  << std::endl;
     //I think 5 is backlog?
     listen(socketFd, 5);
@@ -96,7 +97,7 @@ void *Server::threadTask(int socket) {
     unsigned char buffer[1024];
     read(socket, buffer, 1024);
     //std::cout << buffer << std::endl;
-
+    unsigned char buf[] = "TISS";
     Reader reader;
     Responder responder;
 
@@ -111,11 +112,10 @@ void *Server::threadTask(int socket) {
 
     Message message = responder.buildMessage(transID);
 
-    for(int i = 0; i < 4; i++) {
-        printf("%02x ", message.getServerName()[i]);
-    }
+    send(socket, buf, 1024, 0);
 
     std::cout << "Exiting... " << std::endl;
+    close(socket);
     pthread_exit(0);
 }
 
