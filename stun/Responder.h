@@ -11,7 +11,7 @@
 
 class Responder {
 public:
-    void buildMessage(std::uint32_t transactionId[]);
+    Message buildMessage(uint32_t *transactionId);
 
 private:
     void setHeader(Message &message);

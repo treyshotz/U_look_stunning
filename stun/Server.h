@@ -9,7 +9,9 @@
 class Server {
 public:
     void startServer();
-};
+    static void* threadTask(int socket);
+
+    };
 
 
 #endif //STUN_SERVER_H

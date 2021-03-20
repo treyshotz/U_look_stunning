@@ -3,6 +3,7 @@
 //
 
 #include "Server.h"
+#include "Reader.h"
 
 #ifdef __WIN32__
 # include <winsock2.h>
@@ -33,7 +34,7 @@
 
 void Server::startServer() {
 
-    int port = 4040;
+    int port = 4041;
     int socketFd;
     socklen_t clilen;
     char buffer[1024];
@@ -58,6 +59,7 @@ void Server::startServer() {
     //Tries to bind the socket, if it failed it will have a value below zero
     if(bind(socketFd, (struct sockaddr * ) &server_addr, sizeof(server_addr)) < 0) {
         std::cout << "Error binding the socket" << std::endl;
+        return;
     }
 
     std::cout << "Server has started on port " << port  << std::endl;
@@ -67,8 +69,10 @@ void Server::startServer() {
     clilen = sizeof(cli_addr);
 
     //Here we assign to new threads
+    int i =0;
     while(true) {
-
+        i++;
+        std::cout << "\n" << i << std::endl;
         int newSocketFd;
         newSocketFd = accept(socketFd, (struct sockaddr *) &cli_addr, &clilen);
         if (newSocketFd < 0) {
@@ -79,19 +83,42 @@ void Server::startServer() {
         std::cout << "Got connection from " << inet_ntoa(cli_addr.sin_addr) << " on port "
                   << ntohs(cli_addr.sin_port) << std::endl;
         std::cout << "Assigning to new thread" << std::endl;
-        pthread_create(&thread, 0, threadTask, newSocketFd);
+        //What the F is this
+        pthread_create(&thread, 0, reinterpret_cast<void *(*)(void *)>(threadTask),
+                       reinterpret_cast<void *>(newSocketFd));
+        pthread_detach(thread);
 
+        std::cout << "Detached thread. Creating a new" << std::endl;
     }
 }
 
-//TODO: Do we really need to take in the mnessage?
-static void* threadTask(int socket) {
-    char buffer[1024];
+void *Server::threadTask(int socket) {
+    unsigned char buffer[1024];
     read(socket, buffer, 1024);
-    std::cout << buffer << std::endl;
+    //std::cout << buffer << std::endl;
 
+    Reader reader;
+    Responder responder;
 
+    //Validate that this is not 0?
+    uint32_t* transID = reader.validateData(buffer, 1024);
+
+    if(transID == 0) {
+        std::cout << "Something went wrong during validating" << std::endl;
+        std::cout << "Exiting thread" << std::endl;
+        //pthread_exit(0);
+    }
+
+    Message message = responder.buildMessage(transID);
+
+    for(int i = 0; i < 4; i++) {
+        printf("%02x ", message.getServerName()[i]);
+    }
+
+    std::cout << "Exiting... " << std::endl;
+    pthread_exit(0);
 }
+
 
 int main() {
     Server server;

@@ -151,8 +151,9 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
  * @param data, the data that will be validated and parsed
  * @param datasize, the size of the data that was sent
  */
-void Reader::validateData(uint8_t *data, uint32_t datasize) {
+uint32_t* Reader::validateData(uint8_t *data, uint32_t datasize) {
 //Develop based on the example given by ietf , https://tools.ietf.org/html/rfc5769
+    std::cout << "Validating data" << std::endl;
 
 //TODO: Because of the hmac sha1 fingerprint we need to store the message somewhere instead of deleting it
 
@@ -165,7 +166,7 @@ void Reader::validateData(uint8_t *data, uint32_t datasize) {
 //Checks that data and datasize is present
     if (!data || !datasize) {
         std::cout << "wrong with input data" << std::endl;
-        return;
+        return 0;
     }
 
 //Copies the data into collectedData vector
@@ -173,7 +174,8 @@ void Reader::validateData(uint8_t *data, uint32_t datasize) {
 
 //Check if the first byte and hexidecimal C0 (1100 0000), aka the two first bits is not 0
     if ((data[0] & 0xC0) != 0x00) {
-        return;
+        std::cout << "The first bits states that this is not a STUN request" << std::endl;
+        return 0;
     }
 
     uint16_t typeAndLength = read16(collectedData);
@@ -188,7 +190,7 @@ void Reader::validateData(uint8_t *data, uint32_t datasize) {
 
     if (!cookieChecker(cookie)) {
         std::cout << "cookie was not right" << std::endl;
-        return;
+        return 0;
     }
 
     Responder responder{};

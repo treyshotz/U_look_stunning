@@ -10,7 +10,7 @@
 #include <iostream>
 #include <zlib.h>
 
-void Responder::buildMessage(std::uint32_t *transactionId) {
+Message Responder::buildMessage(uint32_t *transactionId) {
     Message message{};
 
     setHeader(message);
@@ -20,7 +20,7 @@ void Responder::buildMessage(std::uint32_t *transactionId) {
     setHmacIntegrity(message);
     setFingerprint(message);
 
-
+    return message;
 }
 
 /**
@@ -65,7 +65,7 @@ void Responder::setSoftware(Message &message) {
     //Padding for the server name
     serverName[15] = '\x20';
     uint32_t headerAndLength = 0;
-    uint32_t c[4];
+    uint32_t c[5];
 
     char length = (char) strlen(serverName);
     char header[] =  "\x80\x22";
@@ -86,6 +86,7 @@ void Responder::setSoftware(Message &message) {
     message.setServerName(c[1], 1);
     message.setServerName(c[2], 2);
     message.setServerName(c[3], 3);
+    printf("%02x ", c[3]);
 }
 
 
@@ -116,9 +117,10 @@ void Responder::setXorAdress(Message &message) {
 }
 
 void Responder::setHmacIntegrity(Message &message) {
+    std::cout << "HMAC NOT FINISHED" << std::endl;
 
 }
 
 void Responder::setFingerprint(Message &message) {
-
+    std::cout << "FINGERPRINT NOT FINSHED" << std::endl;
 }
