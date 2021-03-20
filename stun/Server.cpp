@@ -60,6 +60,7 @@ void Server::startServer() {
         std::cout << "Error binding the socket" << std::endl;
     }
 
+    printf("IP address is: %s\n", inet_ntoa(server_addr.sin_addr));
     std::cout << "Server has started on port " << port  << std::endl;
     //I think 5 is backlog?
     listen(socketFd, 5);
@@ -88,9 +89,27 @@ void Server::startServer() {
 static void* threadTask(int socket) {
     char buffer[1024];
     read(socket, buffer, 1024);
-    std::cout << buffer << std::endl;
+    //std::cout << buffer << std::endl;
+    unsigned char buf[] = "TISS";
+    Reader reader;
+    Responder responder;
 
+    //Validate that this is not 0?
+    uint32_t* transID = reader.validateData(buffer, 1024);
 
+    if(transID == 0) {
+        std::cout << "Something went wrong during validating" << std::endl;
+        std::cout << "Exiting thread" << std::endl;
+        //pthread_exit(0);
+    }
+
+    Message message = responder.buildMessage(transID);
+
+    send(socket, buf, 1024, 0);
+
+    std::cout << "Exiting... " << std::endl;
+    close(socket);
+    pthread_exit(0);
 }
 
 int main() {

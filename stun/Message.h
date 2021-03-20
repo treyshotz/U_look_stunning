@@ -10,6 +10,7 @@
 
 class Message {
 public:
+
     uint32_t getTypeAndLength() const;
 
     void setTypeAndLength(uint32_t typeAndLength);
