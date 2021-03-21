@@ -19,24 +19,23 @@ var {"v4": uuidv4} = require('uuid')
 //Folder for js and css
 app.use(express.static('public'))
 
-//If user doesn't enter any room id a random one is created
-//Redirects client to the created roomid
 app.get('/', (req, res) => {
     res.redirect(`/${uuidv4()}`)
 })
 
+// Serve the index.html file as content of the / route
 app.get('/:room', (req, res) => {
-    res.render('index.ejs', { roomId: req.params.room})
+    res.render('index.ejs', {roomId: req.params.room})
 })
 
-io.on('connection', (client) => {
-    client.on('join', (roomId, userId) => {
+io.on('connection', socket => {
+    socket.on('join', (roomId, userId) => {
         console.log(roomId + " " + userId)
-        client.join(roomId)
-        client.to(roomId).emit('joined', userId)
+        socket.join(roomId)
+        socket.to(roomId).emit('joined', userId)
 
-        client.on('disconnect', () => {
-            client.to(roomId).emit('disconnected', userId)
+        socket.on('disconnect', () => {
+            socket.to(roomId).emit('disconnected', userId)
         })
     })
 })
