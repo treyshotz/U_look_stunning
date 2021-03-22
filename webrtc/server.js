@@ -1,8 +1,15 @@
 var express = require('express')
 var app = express()
 var fs = require('fs')
+
+// Set up a route to redirect http to https
+var http = express();
+http.get('*', (req, res) => {  
+    res.redirect('https://' + req.headers.host + req.url);
+})
+
 var https = require('https')
-var server = https.createServer({
+var httpsServer = https.createServer({
     key: fs.readFileSync('cert/key.pem'),
     cert: fs.readFileSync('cert/cert.pem')
     },
@@ -11,7 +18,7 @@ var server = https.createServer({
 
 //For signaling
 var socketIo = require('socket.io')
-var io = socketIo(server)
+var io = socketIo(httpsServer)
 
 //For generating roomIds
 var {"v4": uuidv4} = require('uuid')
@@ -40,4 +47,5 @@ io.on('connection', socket => {
     })
 })
 
-server.listen(443)
+http.listen(80);
+httpsServer.listen(443)
