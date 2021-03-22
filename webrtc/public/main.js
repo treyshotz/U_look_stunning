@@ -20,7 +20,7 @@ function start(){
     var socket = io('/')
     peer = new Peer(undefined, {
         host: '/',
-        port: '443',
+        port: '9000',
         config: {
             'iceServers': [
                 { url: 'stun:stun1.l.google.com:19302' },
