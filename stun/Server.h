@@ -8,8 +8,8 @@
 
 class Server {
 public:
-    void startServer();
-};
+    [[noreturn]] void startServer();
+    static void* threadTask(void *input);
 
 
 #endif //STUN_SERVER_H
