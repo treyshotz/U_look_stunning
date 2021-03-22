@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mads, Lars og Simon - prosjekt i nettprog</title>
-    <link rel="stylesheet" href="styles.css">
-    <script>const ROOM = '<%= roomId %>';</script><!--For using the generated room id-->
-    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
-    <script src="/socket.io/socket.io.js" defer></script><!--Socket io for signalling-->
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js" defer></script><!--For compability on all browsers-->
-    <script src="main.js" defer></script><!--Main script-->
-</head>
-<body>
-    <div id="login-wrapper">
-        <h1>Enter username: </h1>
-        <input name="input" type="text" id="username-input" class="input"/>
-        <button name="send-btn" class="submit-btn" onclick="enterRoom()">Enter room</button>
-    </div>
-    <div id="video-container">
-        <div id="wrapper">
-            <div id="chatbox"></div>
- 
-            <div id="input-form">
-                <input name="input" type="text" id="chat-input" class="input"/>
-                <button name="send-btn" class="submit-btn" onclick="sendMsg()">Send</button>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mads, Lars og Simon - prosjekt i nettprog</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous"> <!--Bootstrap-->
+        <link rel="stylesheet" href="styles.css">
+        <script>const ROOM = '<%= roomId %>';</script><!--For using the generated room id-->
+        <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
+        <script src="/socket.io/socket.io.js" defer></script><!--Socket io for signalling-->
+        <script src="https://webrtc.github.io/adapter/adapter-latest.js" defer></script><!--For compability on all browsers-->
+        <script src="main.js" defer></script><!--Main script-->
+    </head>
+    <body>
+        <div id="username-container">
+            <h1>Please write your username: </h1>
+            <div class="input-form">
+                <input autocomplete="off" name="input" type="text" id="username-input" class="input-field"/>
+                <button name="send-btn" class="submit-btn" onclick="enterRoom()">Enter room</button>
             </div>
         </div>
-    </div>
-</body>
+        <main>
+            <div class="row">
+                <div class="video-container col-lg-8" id="video-container">
+                </div>
+                <div class="chat-container col-lg-4">
+                    <div id="chatbox">
+                    </div>
+                    <div class="input-form">
+                        <input autocomplete="off" name="input" type="text" id="chat-input" class="input-field"/>
+                        <button name="send-btn" class="submit-btn" onclick="sendMsg()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
 </html>
