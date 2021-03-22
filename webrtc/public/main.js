@@ -1,88 +1,198 @@
-var client = io('/')
-var peer = new Peer(undefined, {
-    host: '/',
-    port: '443',
-    config: {
-        'iceServers': [
-            { url: 'stun:stun1.l.google.com:19302' },
-        ]
+function enterRoom(){
+    var input = document.getElementById('username-input')
+    if(input.value != ''){
+        document.getElementById('username-container').style.display = 'none'
+        document.getElementsByTagName('main')[0].style.display = 'block'
+        myUsername = input.value
+        start()
     }
-
-})
+}
 
 var videoContainer = document.getElementById("video-container")
-var myVideo = document.createElement('video')
-myVideo.muted = true
+var chatBox = document.getElementById('chatbox')
+var chatConnections = []
+var streamConnections = []
+var myStream
+var myUsername
+var peer
 
+function start(){
+    var socket = io('/')
+    peer = new Peer(undefined, {
+        host: '/',
+        port: '9000',
+        config: {
+            'iceServers': [
+                { url: 'stun:stun1.l.google.com:19302' },
+            ]
+        }
+    })
 
-var constraints = {
-    video: 'true',
-    audio: 'true'
-}
-
-peer.on('open', id => {
-    console.log('Peer: ' + id)
-    if(!(id === null)){
-        client.emit('join', ROOM, id)
+    var constraints = {
+        video: 'true',
+        audio: 'true'
     }
-    else{
-        console.log("Did not get peer id")
-    }
 
-
-    navigator.mediaDevices.getUserMedia(constraints)
-    .then(stream => {
-        addStreamToVideoObject(myVideo, stream)
-
-        client.on('joined', userId => {
-            console.log("Socket joined room. Trying to connect to stream")
-            connectToNewStream(userId, stream)
+    peer.on('open', id => {
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(stream => {
+            myStream = stream
+            var myVideo = document.createElement('video')
+            myVideo.muted = true
+            addNewStream(myVideo, myStream, id, myUsername)
+            socket.emit('join', ROOM, id, myUsername)
+        })
+        .catch(err => {
+            console.log(err)
+            socket.emit('join', ROOM, id, myUsername)
+            myStream = new MediaStream()
         })
     })
-    .catch(function(err) {
-        console.log(err)
-    });
-})
-
-client.on('disconnected', userId => {
-    console.log('Disconnected user with id: ' + userId)
-    videoContainer.removeChild(document.getElementById(userId))
-})
-
-peer.on('call', call => {
-    navigator.mediaDevices.getUserMedia(constraints)
-    .then(stream => {
-        call.answer(stream)
-        var video = document.createElement('video')
-        video.setAttribute('id', call.peer)
-        console.log("Answered user with id: " + call.peer)
-        call.on('stream', stream => {
-            addStreamToVideoObject(video, stream)
+    
+    socket.on('joined', (userId, username) => {
+        console.log("Socket joined room. Trying to connect to stream")
+        connectToNewStream(userId, username)
+        connectToNewChatUser(userId, username)
+    })
+    
+    socket.on('disconnected', userId => {
+        console.log('Disconnected user with id: ' + userId)
+        console.log(chatConnections)
+        var video = document.getElementById(userId)
+        if(video){
+            videoContainer.removeChild(document.getElementById(userId))
+        }
+    })
+    
+    peer.on('connection', connection => {
+        console.log("New chat connection with user: " + connection.peer)
+    
+        chatConnections.push(connection)
+        connection.on('data', data => {
+            addChatEntry(data, connection.options.metadata.username, false)
+        })
+    
+        peer.on('close', () => {
+            console.log("Removing chat connection")
+            chatConnections.remove(connection)
+        })
+    })
+    
+    peer.on('call', call => {
+        console.log("Incomming call from user with id:" + call.peer)
+        call.answer(myStream)
+    
+        call.on('stream', incommingStream => {
+            console.log(incommingStream)
+            if(!streamConnections.includes(call.peer)){
+                streamConnections.push(call.peer)
+                var newVideo = document.createElement('video')
+                addNewStream(newVideo, incommingStream , call.peer, call.options.metadata.username)
+            }
         })
         call.on('close', () => {
-            video.remove()
+            streamConnections.remove(call.Peer)
+            newVideo.remove()
         })
-    })
-})
-
-function connectToNewStream(userId, stream){
-    console.log("Calling " + userId)
-    const call = peer.call(userId, stream)
-    var video = document.createElement('video')
-    video.setAttribute('id', userId);
-    console.log('Calling user with id: ' + userId)
-    call.on('stream', userVideoStream => {
-        addStreamToVideoObject(video, userVideoStream)
-    })
-    call.on('close', () => {
-        video.remove()
     })
 }
 
-function addStreamToVideoObject(video, stream) {
+function connectToNewStream(userId, username){
+    console.log('Calling user with id: ' + userId)
+    var call = peer.call(userId, myStream, {metadata: {
+        username: myUsername
+    }})
+    call.on('stream', incommingStream => {
+        console.log(incommingStream)
+        if(!streamConnections.includes(userId)){
+            streamConnections.push(userId)
+            var newVideo = document.createElement('video')
+            addNewStream(newVideo, incommingStream , call.peer, username)
+        }
+    })
+    call.on('close', () => {
+        streamConnections.remove(userId)
+        newVideo.remove()
+    })
+}
+
+function addChatEntry(message, username, initiator){
+    var chatElement = document.createElement('div')
+    chatElement.classList.add('chat-entry')
+    var label = document.createElement('label')
+    label.innerHTML = username + ":"
+    var content = document.createElement('p')
+    content.classList.add('chat-entry-content')
+    content.innerHTML = message
+
+    if(initiator){
+        label.classList.add('created')
+        content.classList.add('created')
+    }
+    chatElement.appendChild(label)
+    chatElement.appendChild(content)
+    chatBox.appendChild(chatElement)
+}
+
+function broadcastMessage(message){
+    if(chatConnections.length > 0){
+        chatConnections.forEach(connection => {
+            connection.send(message)
+        })
+    }
+}
+
+function connectToNewChatUser(userId, username){
+    var connection = peer.connect(userId, {metadata: {
+        username: myUsername
+    }})
+
+    connection.on('open', () => {
+        console.log("New chat connection with user: " + userId)
+        chatConnections.push(connection)
+        connection.on('data', data => {
+            addChatEntry(data, username, false)
+        })
+
+        peer.on('close', () => {
+            console.log("Removing chat connection")
+            chatConnections.remove(connection)
+        })
+    })
+}
+
+function sendMsg(){
+    var message = document.getElementById('chat-input')
+    if(message.value){
+        broadcastMessage(message.value)
+        addChatEntry(message.value, myUsername, true)
+    }
+    message.value = ""
+}
+
+function addNewStream(video, stream, id, username) {
     video.srcObject = stream
-    video.addEventListener('loadedmetadata', (event) => {
+    video.addEventListener('loadedmetadata', () => {
         video.play()
-    });
-    videoContainer.appendChild(video)
+    })
+    var container = document.createElement('div')
+    container.style.position = 'relative'
+    var label = document.createElement('label')
+    label.classList.add('overlay')
+    label.innerHTML = username
+    container.setAttribute('id', id);
+
+    container.addEventListener('click', () => {
+        if(container.classList.contains('fullscreen')){
+            container.classList.remove('fullscreen')
+        }
+        else{
+            container.classList.add('fullscreen')
+        }
+    })
+
+    container.appendChild(video)
+    container.appendChild(label)
+    
+    videoContainer.appendChild(container)
 }

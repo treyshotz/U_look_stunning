@@ -1,17 +1,142 @@
 body{
-    height: 100%;
-    width: 100%;
-    background-color: lavender;
+    height: 100vh;
+    overflow: visible;
+    background: #77ACA2;
+    background: linear-gradient(0deg, #031926f6 0%, #77ACA2 50%);
 }
 
-#video-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+main{
+    display: none;
 }
 
-video{
+.row{
+    --bs-gutter-x: 0;
+    height: 100vh;
+}
+
+h1{
+    text-align: center;
+}
+
+video {
+    background-color: black;
     width: 100%;
     height: 100%;
+    display: block;
     object-fit: cover;
+}
+
+.video-container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+#username-container{
+    position: absolute;
+    width: 50%;
+    left: 25%;
+    top: 40%;
+}
+
+.fullscreen{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+.fullscreen label{
+    font-size: x-large;
+}
+
+.overlay{
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    font-weight: bold;
+    color: whitesmoke;
+    font-size: medium;
+}
+
+.chat-container{
+    padding: 1em;
+    background: rgb(0,47,80);
+    background: linear-gradient(90deg, #031926 0%, #468189 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+#chatbox {
+    flex-grow: 1;
+    text-align: left;
+    margin-bottom: 2em;
+    padding: 1em;
+    background: whitesmoke;
+    border: .1em solid #77ACA2;
+    overflow: auto;
+    border-radius: 1em;
+    border-bottom: .3em solid #468189;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-entry{
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8em;
+}
+
+.chat-entry label{
+    margin-left: .5em;
+}
+
+.chat-entry label.created{
+    margin-right: .5em;
+}
+
+.created{
+    text-align: right;
+}
+
+.chat-entry-content{
+    padding: .6em;
+    max-width: 70%;
+    background-color: #468189;
+    border-radius: .5em;
+    font-size: 1.4em;
+    margin: 0 auto 1em 0;
+}
+
+.chat-entry-content.created{
+    background-color: #9DBEBB;
+    margin: 0 0 1em auto;
+}
+   
+.input-form {
+    display: flex;
+    gap: .5em;
+}
+
+.input-field {
+    flex: 1;
+    border-radius: .5em;
+    border: 0.1em solid #9DBEBB;
+}
+
+.input-field:focus {
+    outline-width: 0;
+}
+
+#username-input{
+    text-align: center;
+}
+   
+.submit-btn{
+    background: rgb(0, 78, 104);
+    border: .2em solid #9DBEBB;
+    color: whitesmoke;
+    padding: .3em .8em;
+    font-weight: bold;
+    border-radius: .5em;
 }
