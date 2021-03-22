@@ -4,6 +4,34 @@
 
 #include "Message.h"
 
+uint32_t* Message::SendPrep() {
+
+    //TODO: set right size
+    uint32_t msg[21];
+    msg[0] = getTypeAndLength();
+    msg[1] = getCookie();
+    msg[2] = getTransactionId()[0];
+    msg[3] = getTransactionId()[1];
+    msg[4] = getTransactionId()[2];
+    msg[5] = getSoftwareHeader();
+    msg[6] = getServerName()[0];
+    msg[7] = getServerName()[1];
+    msg[8] = getServerName()[2];
+    msg[9] = getServerName()[3];
+    msg[10] = getXorHeader();
+    msg[11] = getXorAdress()[0];
+    msg[12] = getXorAdress()[1];
+    msg[13] = getIntegrityHeader();
+    msg[14] = getHmacFingerprint()[0];
+    msg[15] = getHmacFingerprint()[1];
+    msg[16] = getHmacFingerprint()[2];
+    msg[17] = getHmacFingerprint()[3];
+    msg[18] = getHmacFingerprint()[4];
+    msg[19] = getFingerprintHeader();
+    msg[20] = getFingerprint();
+    return msg;
+}
+
 uint32_t Message::getCookie() const {
     return cookie;
 }

@@ -34,7 +34,7 @@
 
 void Server::startServer() {
 
-    int port = 4041;
+    int port = 4040;
     int socketFd;
     socklen_t clilen;
     char buffer[1024];
@@ -72,8 +72,7 @@ void Server::startServer() {
     //Here we assign to new threads
     int i =0;
     while(true) {
-        i++;
-        std::cout << "\n" << i << std::endl;
+
         int newSocketFd;
         newSocketFd = accept(socketFd, (struct sockaddr *) &cli_addr, &clilen);
         if (newSocketFd < 0) {
@@ -104,6 +103,12 @@ void *Server::threadTask(int socket) {
     //Validate that this is not 0?
     uint32_t* transID = reader.validateData(buffer, 1024);
 
+    std::cout << "TRANSID: ";
+    for(int i = 0; i < 3; i++) {
+        printf("%02x", transID[i]);
+    }
+    printf("\n");
+
     if(transID == 0) {
         std::cout << "Something went wrong during validating" << std::endl;
         std::cout << "Exiting thread" << std::endl;
@@ -112,7 +117,19 @@ void *Server::threadTask(int socket) {
 
     Message message = responder.buildMessage(transID);
 
-    send(socket, buf, 1024, 0);
+    //std::cout << message.getCookie() << std::endl;
+    //printf("%02x", message.getCookie());
+
+    //TODO: Kinda dirty, try to find a better method?
+    uint32_t ab[20];
+    for(int i = 0; i < 20; i++) {
+        ab[i] = message.SendPrep()[i];
+        printf("%02x ", ab[i]);
+        ab[i] = ntohl(ab[i]);
+    }
+    printf("\n");
+
+    send(socket, ab, 1024, 0);
 
     std::cout << "Exiting... " << std::endl;
     close(socket);
