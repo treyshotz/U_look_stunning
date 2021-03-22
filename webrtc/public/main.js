@@ -42,6 +42,11 @@ function start(){
             addNewStream(myVideo, myStream, id, myUsername)
             socket.emit('join', ROOM, id, myUsername)
         })
+        .catch(err => {
+            console.log(err)
+            socket.emit('join', ROOM, id, myUsername)
+            myStream = null
+        })
     })
     
     socket.on('joined', (userId, username) => {
