@@ -44,6 +44,20 @@ video {
     height: 100vh;
 }
 
+.fullscreen label{
+    font-size: x-large;
+}
+
+.overlay{
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    font-weight: bold;
+    color: whitesmoke;
+    font-size: medium;
+}
+
 .chat-container{
     padding: 1em;
     background: rgb(0,47,80);
@@ -70,6 +84,14 @@ video {
     display: flex;
     flex-direction: column;
     font-size: 0.8em;
+}
+
+.chat-entry label{
+    margin-left: .5em;
+}
+
+.chat-entry label.created{
+    margin-right: .5em;
 }
 
 .created{

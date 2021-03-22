@@ -25,8 +25,8 @@ function start(){
             'iceServers': [
                 { url: 'stun:stun1.l.google.com:19302' },
             ]
-        }
-
+        },
+        username: myUsername
     })
 
     var constraints = {
@@ -40,15 +40,15 @@ function start(){
             myStream = stream
             var myVideo = document.createElement('video')
             myVideo.muted = true
-            addNewStream(myVideo, myStream, id)
-            socket.emit('join', ROOM, id)
+            addNewStream(myVideo, myStream, id, myUsername)
+            socket.emit('join', ROOM, id, myUsername)
         })
     })
     
-    socket.on('joined', userId => {
+    socket.on('joined', (userId, username) => {
         console.log("Socket joined room. Trying to connect to stream")
-        connectToNewStream(userId)
-        connectToNewChatUser(userId)
+        connectToNewStream(userId, username)
+        connectToNewChatUser(userId, username)
     })
     
     socket.on('disconnected', userId => {
@@ -62,7 +62,7 @@ function start(){
     
         chatConnections.push(connection)
         connection.on('data', data => {
-            addChatEntry(data.message, data.username, false)
+            addChatEntry(data, connection.options.metadata.username, false)
         })
     
         peer.on('close', () => {
@@ -79,7 +79,8 @@ function start(){
             if(!streamConnections.includes(call.peer)){
                 streamConnections.push(call.peer)
                 var newVideo = document.createElement('video')
-                addNewStream(newVideo, incommingStream , call.peer)
+                console.log(call.options)
+                addNewStream(newVideo, incommingStream , call.peer, call.options.metadata.username)
             }
         })
         call.on('close', () => {
@@ -89,15 +90,17 @@ function start(){
     })
 }
 
-function connectToNewStream(userId){
+function connectToNewStream(userId, username){
     console.log('Calling user with id: ' + userId)
-    var call = peer.call(userId, myStream)
-
+    var call = peer.call(userId, myStream, {metadata: {
+        username: myUsername
+    }})
     call.on('stream', incommingStream => {
         if(!streamConnections.includes(userId)){
             streamConnections.push(userId)
             var newVideo = document.createElement('video')
-            addNewStream(newVideo, incommingStream , call.peer)
+            console.log(call)
+            addNewStream(newVideo, incommingStream , call.peer, username)
         }
     })
     call.on('close', () => {
@@ -105,7 +108,6 @@ function connectToNewStream(userId){
         newVideo.remove()
     })
 }
-
 
 function addChatEntry(message, username, initiator){
     var chatElement = document.createElement('div')
@@ -128,20 +130,21 @@ function addChatEntry(message, username, initiator){
 function broadcastMessage(message){
     if(chatConnections.length > 0){
         chatConnections.forEach(connection => {
-            console.log(myUsername)
-            connection.send({message: message, username: myUsername})
+            connection.send(message)
         })
     }
 }
 
-function connectToNewChatUser(userId){
-    var connection = peer.connect(userId)
+function connectToNewChatUser(userId, username){
+    var connection = peer.connect(userId, {metadata: {
+        username: myUsername
+    }})
 
     connection.on('open', () => {
         console.log("New chat connection with user: " + userId)
         chatConnections.push(connection)
         connection.on('data', data => {
-            addChatEntry(data.message, data.username, false)
+            addChatEntry(data, username, false)
         })
 
         peer.on('close', () => {
@@ -160,22 +163,29 @@ function sendMsg(){
     message.value = ""
 }
 
-
-function addNewStream(video, stream, id) {
-    video.setAttribute('id', id);
+function addNewStream(video, stream, id, username) {
     video.srcObject = stream
-    video.addEventListener('loadedmetadata', (event) => {
+    video.addEventListener('loadedmetadata', () => {
         video.play()
     })
+    var container = document.createElement('div')
+    container.style.position = 'relative'
+    var label = document.createElement('label')
+    label.classList.add('overlay')
+    label.innerHTML = username
+    container.setAttribute('id', id);
 
-    video.addEventListener('click', () => {
-        if(video.classList.contains('fullscreen')){
-            video.classList.remove('fullscreen')
+    container.addEventListener('click', () => {
+        if(container.classList.contains('fullscreen')){
+            container.classList.remove('fullscreen')
         }
         else{
-            video.classList.add('fullscreen')
+            container.classList.add('fullscreen')
         }
     })
+
+    container.appendChild(video)
+    container.appendChild(label)
     
-    videoContainer.appendChild(video)
+    videoContainer.appendChild(container)
 }
