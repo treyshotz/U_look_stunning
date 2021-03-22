@@ -2,9 +2,7 @@ body{
     height: 100vh;
     overflow: visible;
     background: #77ACA2;
-    background: #77ACA2;
-    background: rgb(0,47,80);
-    background: linear-gradient(0deg, #031926 0%, #77ACA2 50%);
+    background: linear-gradient(0deg, #031926f6 0%, #77ACA2 50%);
 }
 
 main{
