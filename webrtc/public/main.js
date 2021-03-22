@@ -45,7 +45,7 @@ function start(){
         .catch(err => {
             console.log(err)
             socket.emit('join', ROOM, id, myUsername)
-            myStream = null
+            myStream = new MediaStream()
         })
     })
     
@@ -80,10 +80,10 @@ function start(){
         call.answer(myStream)
     
         call.on('stream', incommingStream => {
+            console.log(incommingStream)
             if(!streamConnections.includes(call.peer)){
                 streamConnections.push(call.peer)
                 var newVideo = document.createElement('video')
-                console.log(call.options)
                 addNewStream(newVideo, incommingStream , call.peer, call.options.metadata.username)
             }
         })
@@ -100,6 +100,7 @@ function connectToNewStream(userId, username){
         username: myUsername
     }})
     call.on('stream', incommingStream => {
+        console.log(incommingStream)
         if(!streamConnections.includes(userId)){
             streamConnections.push(userId)
             var newVideo = document.createElement('video')
