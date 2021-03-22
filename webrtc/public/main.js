@@ -58,7 +58,10 @@ function start(){
     socket.on('disconnected', userId => {
         console.log('Disconnected user with id: ' + userId)
         console.log(chatConnections)
-        videoContainer.removeChild(document.getElementById(userId))
+        var video = document.getElementById(userId)
+        if(video){
+            videoContainer.removeChild(document.getElementById(userId))
+        }
     })
     
     peer.on('connection', connection => {
@@ -104,7 +107,6 @@ function connectToNewStream(userId, username){
         if(!streamConnections.includes(userId)){
             streamConnections.push(userId)
             var newVideo = document.createElement('video')
-            console.log(call)
             addNewStream(newVideo, incommingStream , call.peer, username)
         }
     })
