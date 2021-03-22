@@ -8,8 +8,8 @@
 
 class Server {
 public:
-    void startServer();
-    static void* threadTask(int socket);
+    [[noreturn]] void startServer();
+    static void* threadTask(void *input);
 
     };
 

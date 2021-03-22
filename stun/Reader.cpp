@@ -166,16 +166,17 @@ uint32_t* Reader::validateData(uint8_t *data, uint32_t datasize) {
 //Checks that data and datasize is present
     if (!data || !datasize) {
         std::cout << "wrong with input data" << std::endl;
-        return 0;
+        return nullptr;
     }
 
 //Copies the data into collectedData vector
     std::copy(data, data + datasize, std::back_inserter(collectedData));
 
+    //TODO: Not sure if this works
 //Check if the first byte and hexidecimal C0 (1100 0000), aka the two first bits is not 0
     if ((data[0] & 0xC0) != 0x00) {
         std::cout << "The first bits states that this is not a STUN request" << std::endl;
-        return 0;
+        return nullptr;
     }
 
     uint16_t typeAndLength = read16(collectedData);
@@ -193,8 +194,7 @@ uint32_t* Reader::validateData(uint8_t *data, uint32_t datasize) {
         return 0;
     }
 
-    Responder responder{};
-    responder.buildMessage(transID);
+    return transID;
     //messageChecker(collectedData, message);
 
 /*
