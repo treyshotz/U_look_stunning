@@ -25,8 +25,7 @@ function start(){
             'iceServers': [
                 { url: 'stun:stun1.l.google.com:19302' },
             ]
-        },
-        username: myUsername
+        }
     })
 
     var constraints = {
