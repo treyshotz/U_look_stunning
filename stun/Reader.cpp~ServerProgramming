@@ -151,10 +151,9 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
  * @param data, the data that will be validated and parsed
  * @param datasize, the size of the data that was sent
  */
-std::vector<uint32_t> Reader::validateData(uint8_t *data, uint32_t datasize) {
+uint32_t* Reader::validateData(uint8_t *data, uint32_t datasize) {
 //Develop based on the example given by ietf , https://tools.ietf.org/html/rfc5769
     std::cout << "Validating data" << std::endl;
-    std::vector<uint32_t> transID;
 
 //TODO: Because of the hmac sha1 fingerprint we need to store the message somewhere instead of deleting it
 
@@ -165,38 +164,37 @@ std::vector<uint32_t> Reader::validateData(uint8_t *data, uint32_t datasize) {
     Message message{};
 
 //Checks that data and datasize is present
-//TODO: Is it right to return the vector?
     if (!data || !datasize) {
         std::cout << "wrong with input data" << std::endl;
-        return transID;
+        return 0;
     }
 
 //Copies the data into collectedData vector
     std::copy(data, data + datasize, std::back_inserter(collectedData));
 
-    //TODO: Not sure if this works
-    //TODO: Is it right to return the vector?
-
 //Check if the first byte and hexidecimal C0 (1100 0000), aka the two first bits is not 0
     if ((data[0] & 0xC0) != 0x00) {
         std::cout << "The first bits states that this is not a STUN request" << std::endl;
-        return transID;
+        return 0;
     }
+
     uint16_t typeAndLength = read16(collectedData);
     uint16_t length = read16(collectedData);
     uint32_t cookie = read32(collectedData);
 
     //Transaction ID is saved for sending back
-    //uint32_t transID[3];
+    uint32_t transID[3];
     for (int i = 0; i < 3; i++) {
-        transID.emplace_back(read32(collectedData));
+        transID[i] = read32(collectedData);
     }
 
     if (!cookieChecker(cookie)) {
         std::cout << "cookie was not right" << std::endl;
+        return 0;
     }
 
-    return transID;
+    Responder responder{};
+    responder.buildMessage(transID);
     //messageChecker(collectedData, message);
 
 /*

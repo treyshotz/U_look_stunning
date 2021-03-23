@@ -10,7 +10,7 @@
 #include <iostream>
 #include <zlib.h>
 
-Message Responder::buildMessage(uint32_t *transactionId) {
+Message Responder::buildMessage(std::vector<uint32_t> transactionId) {
     Message message{};
 
     setHeader(message);
@@ -31,11 +31,11 @@ Message Responder::buildMessage(uint32_t *transactionId) {
 void Responder::setHeader(Message &message) {
     //The length is the amount of bytes after transaction ID
     //On a ipv4 response it should be 64
-    char responseAndLengthArray[] = "\x01\x01\x00\x40";
+    unsigned char responseAndLengthArray[] = "\x01\x01\x00\x40";
     uint32_t responseAndLength = (char) responseAndLengthArray[0] << 24 | responseAndLengthArray[1] << 16 | responseAndLengthArray[2] << 8 | responseAndLengthArray[3];
 
-    char cookieArr[] = "\x21\x12\a4\42";
-    uint32_t cookie = (char) cookieArr[0] << 24 | cookieArr[1] << 16 | cookieArr[2] << 8 | cookieArr[4];
+    unsigned char cookieArr[] = "\x21\x12\xa4\x42";
+    uint32_t cookie = (char) cookieArr[0] << 24 | cookieArr[1] << 16 | cookieArr[2] << 8 | cookieArr[3];
 
     message.setTypeAndLength(responseAndLength);
     message.setCookie(cookie);
@@ -47,9 +47,8 @@ void Responder::setHeader(Message &message) {
  * @param message to set the transactionID on
  * @param transactionId receives the transactionID from received request
  */
-void Responder::setTransactionId(Message &message, uint32_t transactionId[]) {
+void Responder::setTransactionId(Message &message, std::vector<uint32_t> transactionId) {
     //TODO: Validate that array is not empty
-    if(transactionId)
     for(int i = 0; i < 3; i++) {
         message.setTransactionId(transactionId[i], i);
     }
@@ -67,19 +66,13 @@ void Responder::setSoftware(Message &message) {
     uint32_t headerAndLength = 0;
     uint32_t c[4];
 
-    char length = (char) strlen(serverName);
+    char length = sizeof(serverName);
     char header[] =  "\x80\x22";
     headerAndLength = (char) header[0] << 24 | header[1] << 16 | length;
 
     for(int i = 0; i < 4; i++) {
         c[i] = (char) serverName[i*4] << 24 | serverName[i*4+1] << 16 | serverName[i*4+2] << 8 | serverName[i*4+3];
     }
-
-    //printf("%08" PRIx32 "\n", headerAndLength);
-    //printf("%08" PRIx32 "\n", c[0]);
-    //printf("%08" PRIx32 "\n", c[1]);
-    //printf("%08" PRIx32 "\n", c[2]);
-    //printf("%08" PRIx32 "\n", c[3]);
 
     message.setSoftwareHeader(headerAndLength);
     message.setServerName(c[0], 0);
