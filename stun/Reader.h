@@ -5,6 +5,14 @@
 #ifndef STUN_READER_H
 #define STUN_READER_H
 
+#include <iostream>
+#include <vector>
+#include <iomanip>
+#include <bitset>
+#include "Message.h"
+#include "Responder.h"
+#include "Reader.h"
+
 class Reader {
 public:
     std::vector<uint32_t> validateData(uint8_t *data, uint32_t datasize);

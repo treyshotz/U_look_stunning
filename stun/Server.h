@@ -13,5 +13,7 @@ public:
     [[noreturn]] void startServer();
     static void* threadTask(args *input);
 
+    };
+
 
 #endif //STUN_SERVER_H

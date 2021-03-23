@@ -156,5 +156,5 @@ void Responder::setHmacIntegrity(Message &message) {
  * @param message
  */
 void Responder::setFingerprint(Message &message) {
-
+    std::cout << "FINGERPRINT NOT FINSHED" << std::endl;
 }

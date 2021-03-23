@@ -3,6 +3,7 @@
 //
 
 #include "Server.h"
+#include "Reader.h"
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -207,6 +208,7 @@ void *Server::threadTask(args *input) {
     free(input);
     pthread_exit(0);
 }
+
 
 int main() {
     Server server;
