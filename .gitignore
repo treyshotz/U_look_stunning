@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+*.cbp
 
 # Compiled Object files
 *.slo
@@ -34,3 +35,7 @@
 # Folders
 **/cmake-build-debug
 **/cmake-build-debug-coverage
+**/CMakeFiles
+
+# Files
+CMakeCache.txt

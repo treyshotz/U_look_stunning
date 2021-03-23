@@ -7,17 +7,19 @@
 
 
 #include <cstdint>
+#include <vector>
+#include <dns_util.h>
 #include "Message.h"
 
 class Responder {
 public:
-    void buildMessage(std::uint32_t transactionId[]);
+    Message buildMessage(std::vector<uint32_t> transactionId, sockaddr_in addr);
 
 private:
     void setHeader(Message &message);
-    void setTransactionId(Message &message, uint32_t transactionId[]);
+    void setTransactionId(Message &message, std::vector<uint32_t> transactionId);
     void setSoftware(Message &message);
-    void setXorAdress(Message &message);
+    void setXorAdress(Message &message, sockaddr_in addr);
     void setHmacIntegrity(Message &message);
     void setFingerprint(Message &message);
 };

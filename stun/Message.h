@@ -10,6 +10,7 @@
 
 class Message {
 public:
+
     uint32_t getTypeAndLength() const;
 
     void setTypeAndLength(uint32_t typeAndLength);
@@ -35,6 +36,10 @@ public:
     void setXorHeader(uint32_t xorHeader);
 
     const uint32_t *getXorAdress() const;
+
+    void setXorFamPort(uint16_t port);
+
+    void setXorIp(uint32_t ip);
 
     uint32_t getIntegrityHeader() const;
 
@@ -78,7 +83,7 @@ public:
     std::uint32_t transactionID[3];
     std::uint32_t softwareHeader;
     //TODO: I dont think this is the right size
-    std::uint32_t serverName[3];
+    std::uint32_t serverName[4];
     std::uint32_t xorHeader;
     //TODO: This is only for ipv4. Add for ipv6 aswell
     std::uint32_t xorAdress[2];
@@ -87,6 +92,7 @@ public:
     std::uint32_t fingerprintHeader;
     std::uint32_t fingerprint;
 
+    std::uint32_t* SendPrep();
 };
 
 
