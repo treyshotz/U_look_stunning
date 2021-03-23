@@ -81,9 +81,9 @@ bool Reader::checkMsgIngrty(std::vector<uint8_t> &collectedData, uint16_t length
 void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message) {
     uint16_t type;
     uint16_t length;
-    int teller = collectedData.size();
+    int counter = collectedData.size();
 
-    while (teller >= 4) {
+    while (counter >= 4) {
 
         //Due to lack of time we can't implement all of the different attributes
         type = read16(collectedData);
@@ -92,7 +92,7 @@ void Reader::messageChecker(std::vector<uint8_t> &collectedData, Message message
 
         int b = 4 - (length % 4);
         int z = length + b;
-        teller = teller - z;
+        counter = counter - z;
 
         switch (type) {
             case USERNAME: {
