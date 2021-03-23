@@ -9,7 +9,7 @@
 uint32_t* Message::SendPrep() {
 
     //TODO: set right size
-    uint32_t msg[21];
+    uint32_t msg[13];
     msg[0] = getTypeAndLength();
     msg[1] = getCookie();
     msg[2] = getTransactionId()[0];
@@ -23,14 +23,15 @@ uint32_t* Message::SendPrep() {
     msg[10] = getXorHeader();
     msg[11] = getXorAdress()[0];
     msg[12] = getXorAdress()[1];
-    msg[13] = getIntegrityHeader();
-    msg[14] = getHmacFingerprint()[0];
-    msg[15] = getHmacFingerprint()[1];
-    msg[16] = getHmacFingerprint()[2];
-    msg[17] = getHmacFingerprint()[3];
-    msg[18] = getHmacFingerprint()[4];
-    msg[19] = getFingerprintHeader();
-    msg[20] = getFingerprint();
+    //TODO: Add this.
+//    msg[13] = getIntegrityHeader();
+//    msg[14] = getHmacFingerprint()[0];
+//    msg[15] = getHmacFingerprint()[1];
+//    msg[16] = getHmacFingerprint()[2];
+//    msg[17] = getHmacFingerprint()[3];
+//    msg[18] = getHmacFingerprint()[4];
+//    msg[19] = getFingerprintHeader();
+//    msg[20] = getFingerprint();
     return msg;
 }
 

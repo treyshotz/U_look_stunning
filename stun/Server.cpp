@@ -14,7 +14,6 @@
 
 //TODO: Is it right to set this limit on the buffer?
 struct args {
-    int socketFd;
     sockaddr_in from;
     unsigned char buffer[1024];
     socklen_t fromlen;
@@ -103,7 +102,12 @@ int length;
 //    }
 //}
 
-
+/**
+ * This starts the server and sets up UDP connection
+ * When a data is received it gives the data to a separate thread to handle it
+ * The thread validates the message, creates a response and sends it back
+ * While the thread does it's tasks the loop can receive more requests
+ */
 [[noreturn]] void Server::startServer() {
     int SIZE = 1024;
     int PORT = 4040;
@@ -115,8 +119,7 @@ int length;
     //SOCK_DGRAM is for UDP
     if ((socketFd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
         std::cout << "Error opening a port" << std::endl;
-        //TODO: Find out which number should be returned
-        exit(99);
+        exit(132);
     }
 
     memset(&server_addr, 0, sizeof(server_addr));
@@ -130,11 +133,9 @@ int length;
     //Tries to bind the socket, if it failed it will have a value below zero
     if (bind(socketFd, (const struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) {
         std::cout << "Error binding the socket" << std::endl;
-        //TODO: Find out which number should be returned
-        exit(99);
+        exit(132);
     }
 
-    printf("IP address is: %s\n", inet_ntoa(server_addr.sin_addr));
     std::cout << "Server has started on port " << PORT << std::endl;
 
     length = sizeof(cli_addr); //length is value/result
@@ -146,44 +147,21 @@ int length;
         std::cout << "Request " << j << std::endl;
 
         struct args *args = (struct args *) malloc(sizeof(struct args));
+        //TODO: Do we need to free this buffer?
         recvfrom(socketFd, (char *) buffer, SIZE, MSG_WAITALL, (struct sockaddr *) &cli_addr,
                                reinterpret_cast<socklen_t *>(&length));
         std::cout << "Received data... Assigning to separate thread" << std::endl;
 
-        //args->from = cli_addr;
-//            std::cout << "\n\nDATA KOMMER HER;" << std::endl;
-//            for(int i = 1; i < 1024; i++) {
-//                //buffer[i] = ntohl(buffer[i]);
-//                printf("%02x ", buffer[i-1]);
-//                if(i%8 == 0)
-//                    printf("\n");
-//            }
-//            printf("\n");
 
         //Use a struct to pass multiple variables into the thread function
         args->from = cli_addr;
         args->fromlen = sizeof(struct sockaddr_in);
-        //TODO: This sucks.
-        for (int i = 0; i < 1025; i++) {
+        //This sucks. But it works
+        for (int i = 0; i < 1024; i++) {
             args->buffer[i] = buffer[i];
         }
 
-        //pthread_create(&thread, 0, reinterpret_cast<void *(*)(void *)>(threadTask), reinterpret_cast<void *>(newSocketFd));
-//            char hello[] = "Hello from server";
-//            std::cout << "Cli_addr "<<&cli_addr << std::endl;
-//            std::cout << "Strlen " <<strlen(hello) << std::endl;
-//            std::cout << "Sizeof " << sizeof(cli_addr) << std::endl;
-//            std::cout << "newSocketFd " << socketFd << std::endl;
-//
-//            int n = sendto(socketFd, hello, strlen(hello),
-//                           0, (struct sockaddr*) &args->from , (int) sizeof(cli_addr));
-//            if(n < 0) {
-//                std::cout << "FIKK IKKE TIL Å SENDE " << std::endl;
-//                std::cout << "N " << n << std::endl;
-//            } else
-//                std::cout << "SENT" << std::endl;
-
-        //TODO: I don't really know what I'm doing
+        //Assigning to a new thread and detatching thread
         pthread_create(&thread, 0, reinterpret_cast<void *(*)(void *)>(threadTask), (void *) args);
         pthread_detach(thread);
     }
@@ -191,49 +169,34 @@ int length;
 
 
 void *Server::threadTask(args *input) {
-    //unsigned char buffer[1024];
-    //int socket = ((struct args*)input)->socketFd;
-
-//    for(int i = 1; i < 1025; i++) {
-//        //buffer[i] = ntohl(buffer[i]);
-//        printf("%02x ", ((struct args*)input)->buffer[i-1]);
-//        if(i%8 == 0)
-//            printf("\n");
-//    }
-
     Reader reader;
     Responder responder;
 
     //Validate that this is not 0?
     std::vector<u_int32_t> transID = reader.validateData(((struct args *) input)->buffer, 1024);
 
-//    std::cout << "Fra server " << std::endl;
-//    for(int i = 0; i < 3; i++) {
-//        printf("%02x", transID[i]);
-//    }
-//    printf("\n");
-
     if (transID.empty()) {
-        //TODO: Send back error
+        //TODO: Send back error message to the client
+        //If the message is a request, the server MUST reject the request
+        //with an error response.  This response MUST use an error code
+        //of 401 (Unauthorized).
         std::cout << "Something went wrong during validating" << std::endl;
         std::cout << "Exiting thread" << std::endl;
         pthread_exit(0);
     }
 
-    printf("IP fra server: %s\n", inet_ntoa(input->from.sin_addr));
-
-
     std::cout << "Check went okay. Preparing response" << std::endl;
     Message message = responder.buildMessage(transID, input->from);
 
-
-    //TODO: Kinda dirty, try to find a better method?
-    uint32_t ab[20];
-    for (int i = 0; i < 20; i++) {
+    //TODO: Kinda dirty, try to find a better method? Also find a better way to handle the size
+    int size = 13;
+    uint32_t ab[size];
+    for (int i = 0; i < size; i++) {
         ab[i] = message.SendPrep()[i];
         ab[i] = ntohl(ab[i]);
     }
 
+    //Sends back the stun response
     int n = sendto(socketFd, ab, sizeof(ab), 0, (struct sockaddr*) &input->from , length);
     if (n < 0) {
         std::cout << "Failed sending" << std::endl;
