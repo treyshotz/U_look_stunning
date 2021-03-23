@@ -37,6 +37,10 @@ public:
 
     const uint32_t *getXorAdress() const;
 
+    void setXorFamPort(uint16_t port);
+
+    void setXorIp(uint32_t ip);
+
     uint32_t getIntegrityHeader() const;
 
     void setIntegrityHeader(uint32_t integrityHeader);
