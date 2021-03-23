@@ -1,24 +1,54 @@
+var socket = io('/');
+var videoContainer = document.getElementById("video-container");
+var chatInput = document.getElementById('chat-input')
+var chatBox = document.getElementById('chatbox');
+var usernameInput = document.getElementById('username-input');
+var chatConnections = [];
+var streamConnections = [];
+
+var myStream;
+var myUsername;
+var myPeer;
+
+/**
+ * This function runs when the 'enter room' button is clicked
+ * If there was any input, the username is stored and the main
+ * content of the page is shown. It also starts the main part
+ * of the script.
+ */
 function enterRoom(){
-    var input = document.getElementById('username-input')
-    if(input.value != ''){
-        document.getElementById('username-container').style.display = 'none'
-        document.getElementsByTagName('main')[0].style.display = 'block'
-        myUsername = input.value
-        start()
+    if(usernameInput.value != ''){
+        document.getElementById('username-container').style.display = 'none';
+        document.getElementsByTagName('main')[0].style.display = 'block';
+        myUsername = usernameInput.value;
+        start();
     }
 }
 
-var videoContainer = document.getElementById("video-container")
-var chatBox = document.getElementById('chatbox')
-var chatConnections = []
-var streamConnections = []
-var myStream
-var myUsername
-var peer
-
+/**
+ * Wrapper for all main functionallity
+ */
 function start(){
-    var socket = io('/')
-    peer = new Peer(undefined, {
+
+    /*
+    Makes it possible to press enter when in the inputfield
+    */
+    chatInput.addEventListener('keypress', event => {
+        if (event.key === 'Enter') {
+          sendMsg();
+        }
+    });
+
+    /*
+    Makes it possible to press enter when in the inputfield
+    */
+    usernameInput.addEventListener('keypress', event => {
+        if (event.key === 'Enter') {
+          enterRoom();
+        }
+    });
+
+    myPeer = new Peer(undefined, {
         host: '/',
         port: '9000',
         config: {
@@ -26,19 +56,23 @@ function start(){
                 { url: 'stun:stun1.l.google.com:19302' },
             ]
         }
-    })
+    });
 
     var constraints = {
         video: 'true',
         audio: 'true'
-    }
+    };
 
-    peer.on('open', id => {
+    /*
+    When peer object is created we ask for video and audio from the user.
+    we 
+    */
+    myPeer.on('open', id => {
         navigator.mediaDevices.getUserMedia(constraints)
         .then(stream => {
-            myStream = stream
+            myStream = stream;
             var myVideo = document.createElement('video')
-            myVideo.muted = true
+            myVideo.muted = true;
             addNewStream(myVideo, myStream, id, myUsername)
             socket.emit('join', ROOM, id, myUsername)
         })
@@ -47,7 +81,7 @@ function start(){
             socket.emit('join', ROOM, id, myUsername)
             myStream = new MediaStream()
         })
-    })
+    });
     
     socket.on('joined', (userId, username) => {
         console.log("Socket joined room. Trying to connect to stream")
@@ -64,7 +98,7 @@ function start(){
         }
     })
     
-    peer.on('connection', connection => {
+    myPeer.on('connection', connection => {
         console.log("New chat connection with user: " + connection.peer)
     
         chatConnections.push(connection)
@@ -72,13 +106,13 @@ function start(){
             addChatEntry(data, connection.options.metadata.username, false)
         })
     
-        peer.on('close', () => {
+        myPeer.on('close', () => {
             console.log("Removing chat connection")
             chatConnections.remove(connection)
         })
     })
     
-    peer.on('call', call => {
+    myPeer.on('call', call => {
         console.log("Incomming call from user with id:" + call.peer)
         call.answer(myStream)
     
@@ -99,7 +133,7 @@ function start(){
 
 function connectToNewStream(userId, username){
     console.log('Calling user with id: ' + userId)
-    var call = peer.call(userId, myStream, {metadata: {
+    var call = myPeer.call(userId, myStream, {metadata: {
         username: myUsername
     }})
     call.on('stream', incommingStream => {
@@ -143,7 +177,7 @@ function broadcastMessage(message){
 }
 
 function connectToNewChatUser(userId, username){
-    var connection = peer.connect(userId, {metadata: {
+    var connection = myPeer.connect(userId, {metadata: {
         username: myUsername
     }})
 
@@ -154,7 +188,7 @@ function connectToNewChatUser(userId, username){
             addChatEntry(data, username, false)
         })
 
-        peer.on('close', () => {
+        myPeer.on('close', () => {
             console.log("Removing chat connection")
             chatConnections.remove(connection)
         })
@@ -185,9 +219,11 @@ function addNewStream(video, stream, id, username) {
     container.addEventListener('click', () => {
         if(container.classList.contains('fullscreen')){
             container.classList.remove('fullscreen')
+            document.getElementsByTagName('body')[0].style.overflow = 'auto';
         }
         else{
             container.classList.add('fullscreen')
+            document.getElementsByTagName('body')[0].style.overflow = 'hidden';
         }
     })
 
