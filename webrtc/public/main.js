@@ -4,7 +4,7 @@ var peer = new Peer(undefined, {
     port: '443',
     config: {
         'iceServers': [
-            { url: 'stun:stun1.l.google.com:19302' },
+            { url: 'stun:127.0.0.1:4040' },
         ]
     }
 
