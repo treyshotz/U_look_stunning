@@ -7,15 +7,16 @@
 
 
 #include <cstdint>
+#include <vector>
 #include "Message.h"
 
 class Responder {
 public:
-    void buildMessage(std::uint32_t transactionId[]);
+    Message buildMessage(std::vector<uint32_t> transactionId);
 
 private:
     void setHeader(Message &message);
-    void setTransactionId(Message &message, uint32_t transactionId[]);
+    void setTransactionId(Message &message, std::vector<uint32_t> transactionId);
     void setSoftware(Message &message);
     void setXorAdress(Message &message);
     void setHmacIntegrity(Message &message);

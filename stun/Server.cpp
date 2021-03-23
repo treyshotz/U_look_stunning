@@ -148,6 +148,7 @@ int length;
         struct args *args = (struct args *) malloc(sizeof(struct args));
         recvfrom(socketFd, (char *) buffer, SIZE, MSG_WAITALL, (struct sockaddr *) &cli_addr,
                                reinterpret_cast<socklen_t *>(&length));
+        std::cout << "Received data... Assigning to separate thread" << std::endl;
 
         //args->from = cli_addr;
 //            std::cout << "\n\nDATA KOMMER HER;" << std::endl;
@@ -204,15 +205,15 @@ void *Server::threadTask(args *input) {
     Responder responder;
 
     //Validate that this is not 0?
-    uint32_t *transID = reader.validateData(((struct args *) input)->buffer, 1024);
+    std::vector<u_int32_t> transID = reader.validateData(((struct args *) input)->buffer, 1024);
 
-//    std::cout << "TRANSID: " << std::endl;
+//    std::cout << "Fra server " << std::endl;
 //    for(int i = 0; i < 3; i++) {
 //        printf("%02x", transID[i]);
 //    }
 //    printf("\n");
 
-    if (transID == 0) {
+    if (transID.empty()) {
         //TODO: Send back error
         std::cout << "Something went wrong during validating" << std::endl;
         std::cout << "Exiting thread" << std::endl;
@@ -229,6 +230,8 @@ void *Server::threadTask(args *input) {
         ab[i] = message.SendPrep()[i];
         ab[i] = ntohl(ab[i]);
     }
+
+    std::cout << std::setfill('0') << std::setw(8) << std::hex << message.getCookie() << '\n';
 
     std::cout << "Sending..." << std::endl;
     //send(socket, ab, 1024, 0);
