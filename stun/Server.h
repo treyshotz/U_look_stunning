@@ -6,10 +6,12 @@
 #define STUN_SERVER_H
 
 
+class args;
+
 class Server {
 public:
     [[noreturn]] void startServer();
-    static void* threadTask(void *input);
+    static void* threadTask(args *input);
 
     };
 

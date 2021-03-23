@@ -37,11 +37,9 @@ Server.h
 /Users/madslun/Documents/Programmering/U_look_stunning/stun/Server.h
 Reader.h
 /Users/madslun/Documents/Programmering/U_look_stunning/stun/Reader.h
-winsock2.h
--
-sys/socket.h
--
 unistd.h
+-
+sys/types.h
 -
 sys/socket.h
 -
