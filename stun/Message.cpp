@@ -3,6 +3,8 @@
 //
 
 #include "Message.h"
+#include <iostream>
+
 
 uint32_t* Message::SendPrep() {
 
@@ -111,4 +113,18 @@ uint32_t Message::getTypeAndLength() const {
 void Message::setTypeAndLength(uint32_t typeAndLength) {
     Message::typeAndLength = typeAndLength;
 }
+
+void Message::setXorFamPort(uint16_t port) {
+    uint32_t famAndPort;
+    //TODO: x01 is only for ipv4... Maybe ipv6 should be added
+    unsigned char zeroAndFam[] = "\x00\x01";
+    famAndPort = (char) zeroAndFam[0] << 24 | zeroAndFam[1] << 16 | port;
+    Message::xorAdress[0] = famAndPort;
+}
+
+void Message::setXorIp(uint32_t ip) {
+    Message::xorAdress[1] = ip;
+}
+
+
 

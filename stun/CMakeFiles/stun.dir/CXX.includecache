@@ -31,6 +31,8 @@ cstdint
 -
 vector
 -
+dns_util.h
+-
 Message.h
 /Users/madslun/Documents/Programmering/U_look_stunning/stun/Message.h
 

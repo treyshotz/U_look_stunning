@@ -221,8 +221,11 @@ void *Server::threadTask(args *input) {
         pthread_exit(0);
     }
 
+    printf("IP fra server: %s\n", inet_ntoa(input->from.sin_addr));
+
+
     std::cout << "Check went okay. Preparing response" << std::endl;
-    Message message = responder.buildMessage(transID);
+    Message message = responder.buildMessage(transID, input->from);
 
 
     //TODO: Kinda dirty, try to find a better method?
@@ -232,15 +235,6 @@ void *Server::threadTask(args *input) {
         ab[i] = ntohl(ab[i]);
     }
 
-    std::cout << std::setfill('0') << std::setw(8) << std::hex << message.getCookie() << '\n';
-
-    std::cout << "Sending..." << std::endl;
-    //send(socket, ab, 1024, 0);
-    //std::cout << "Cli_addr " << input->from << std::endl;
-    std::cout << "Strlen " << sizeof(ab) << std::endl;
-    std::cout << "Sizeof " << sizeof(((struct args *) &input)->from) << std::endl;
-    std::cout << "SocketFd " << socketFd << std::endl;
-    
     int n = sendto(socketFd, ab, sizeof(ab), 0, (struct sockaddr*) &input->from , length);
     if (n < 0) {
         std::cout << "Failed sending" << std::endl;

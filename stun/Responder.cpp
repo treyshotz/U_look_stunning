@@ -10,13 +10,13 @@
 #include <iostream>
 #include <zlib.h>
 
-Message Responder::buildMessage(std::vector<uint32_t> transactionId) {
+Message Responder::buildMessage(std::vector<uint32_t> transactionId, sockaddr_in addr) {
     Message message{};
 
     setHeader(message);
     setTransactionId(message, transactionId);
     setSoftware(message);
-    setXorAdress(message);
+    setXorAdress(message, addr);
     setHmacIntegrity(message);
     setFingerprint(message);
 
@@ -83,29 +83,49 @@ void Responder::setSoftware(Message &message) {
 
 
 //TODO: Take network as input
-void Responder::setXorAdress(Message &message) {
+void Responder::setXorAdress(Message &message, sockaddr_in addr) {
+
+    uint32_t ip = ntohl(addr.sin_addr.s_addr);
+    uint16_t port = htons(addr.sin_port);
+    //printf("IP fra xor : %s\n", inet_ntoa(addr.sin_addr));
+    printf("Port fra xor : %hu\n", port);
+
+    unsigned char header[] = "\x00\x20\x00\x08";
+    uint32_t head = (char) header[0] << 24 | header[1] << 16 | header[2] << 8 | header[3];
+
+
+    //TODO: Maybe we need to convert this back?
+    //Convert to right endian
+    std::bitset<16> portBits(port);
+
     /*
     uint16_t xxxandFamily = read16(collectedData);
     std::bitset<16> a(xxxandFamily);
     std::cout << a << std::endl;
     uint16_t xPort = read16(collectedData);
+*/
+    std::bitset<32> a(ip);
+    std::bitset<32> b;
 
-    std::bitset<16> x(xPort);
+    std::bitset<16> x(port);
+    //Magic cookie
     std::bitset<32> z(std::string("00100001000100101010010001000010"));
     std::bitset<16> y;
-    //std::cout << x << '\n';
-    //std::cout << z << '\n';
-
 
     int j = 32;
     int k = 16;
     for (int i = 0; i < 16; i++) {
         y[k - i] = z[j - i] ^ x[k - i];
     }
-    std::cout << y << std::endl;
-*/
-    //TODO: Convert the xor'd bits to "network byte order"
-    // find out
+
+    b = a ^ z;
+    std::cout << b << std::endl;
+    uint16_t xorPort = y.to_ullong();
+    uint32_t xorIp = b.to_ullong();
+
+    message.setXorHeader(head);
+    message.setXorFamPort(xorPort);
+    message.setXorIp(xorIp);
 }
 
 void Responder::setHmacIntegrity(Message &message) {
