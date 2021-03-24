@@ -7,9 +7,12 @@
 
 
 #include <cstdint>
+#include <vector>
 
 class Message {
 public:
+
+    std::vector<uint32_t> SendPrep();
 
     uint32_t getTypeAndLength() const;
 
@@ -92,7 +95,6 @@ public:
     std::uint32_t fingerprintHeader;
     std::uint32_t fingerprint;
 
-    std::uint32_t* SendPrep();
 };
 
 
