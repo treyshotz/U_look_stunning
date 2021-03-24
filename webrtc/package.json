@@ -13,8 +13,8 @@
     "nodemon": "^2.0.7"
   },
   "scripts": {
-    "startHttp": "nodemon http.js",
-    "startSignalling": "nodemon signalling-server.js"
+    "startRedirect": "nodemon redirect.js",
+    "startServer": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
