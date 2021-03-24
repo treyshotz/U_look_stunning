@@ -6,7 +6,7 @@ services:
     build:
       ./webrtc
     ports:
-    - 3333:443
+    - 443:443
 
   stun:
     container_name: stun
