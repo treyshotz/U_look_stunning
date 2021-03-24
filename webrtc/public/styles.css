@@ -41,18 +41,19 @@ video {
     width: 100vw;
     height: 100vh;
     position: absolute;
-    z-index: 2;
+    z-index: 98;
 }
 
 .fullscreen label{
     font-size: x-large;
+    z-index: 99;
 }
 
 .overlay{
     width: 100%;
     position: absolute;
     top: 0;
-    z-index: 3;
+    z-index: 2;
     text-align: center;
     font-weight: bold;
     font-size: medium;
