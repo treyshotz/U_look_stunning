@@ -124,7 +124,7 @@ void Responder::setXorAdress(Message &message, sockaddr_in addr) {
     //Xor the port with the 16 most significant bits from the magic cookie
     int j = 32;
     int k = 16;
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i <= 16; i++) {
         y[k - i] = z[j - i] ^ x[k - i];
     }
 
