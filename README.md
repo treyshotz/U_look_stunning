@@ -20,7 +20,8 @@ The project uses Jenkins, webhook and docker-compose to perform continuous deplo
 * Allow users without camera to stream audio
 * Allow users to select camera and audio options
 * Add attributes to the STUN-message
-* Ensure thread safety while multithreading
+* Improve thread safety while multithreading on stun server, using worker threads and event loop
+* Improve error handling on stun server
 * Obtain a ssl certificate from a certificate authority
 * Improve video fit area
 * Implement login system
