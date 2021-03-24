@@ -131,8 +131,8 @@ void Responder::setXorAdress(Message &message, sockaddr_in addr) {
     //Xor the ip address with the magic cookie
     b = a ^ z;
 
-    uint16_t xorPort = y.to_ullong();
-    uint32_t xorIp = b.to_ullong();
+    uint16_t xorPort = y.to_ulong();
+    uint32_t xorIp = b.to_ulong();
 
     message.setXorHeader(head);
     message.setXorFamPort(xorPort);
