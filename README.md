@@ -22,6 +22,7 @@ The project uses Jenkins, webhook and docker-compose to perform continuous deplo
 * Add attributes to the STUN-message
 * Improve thread safety while multithreading on stun server, using worker threads and event loop
 * Improve error handling on stun server
+* Implement IPv6 handling in stun server
 * Obtain a ssl certificate from a certificate authority
 * Improve video fit area
 * Implement login system
