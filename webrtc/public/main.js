@@ -265,9 +265,9 @@ function addNewStream(video, stream, id, username) {
     /*
     Wrapper for video and video-label
     */
-    var container = document.createElement('div');
-    container.style.position = 'relative';
-    container.setAttribute('id', id);
+    var wrapper = document.createElement('div');
+    wrapper.classList.add('video-wrapper');
+    wrapper.setAttribute('id', id);
 
     /*
     Creating a label with username on top of video
@@ -277,23 +277,21 @@ function addNewStream(video, stream, id, username) {
     label.innerHTML = username;
 
     /*
-    Making video fullscreen when clicked
+    Making video in focus when clicked
     */
-    container.addEventListener('click', () => {
-        if(container.classList.contains('fullscreen')){
-            container.classList.remove('fullscreen');
-            document.getElementsByTagName('body')[0].style.overflow = 'auto';
+    wrapper.addEventListener('click', () => {
+        if(wrapper.classList.contains('fullscreen')){
+            wrapper.classList.remove('fullscreen');
         }
         else{
-            container.classList.add('fullscreen')
-            document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+            wrapper.classList.add('fullscreen')
         }
     });
 
-    container.appendChild(video);
-    container.appendChild(label);
+    wrapper.appendChild(video);
+    wrapper.appendChild(label);
     
-    videoContainer.appendChild(container);
+    videoContainer.appendChild(wrapper);
 }
 
 
