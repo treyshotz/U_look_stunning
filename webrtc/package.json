@@ -13,7 +13,6 @@
     "nodemon": "^2.0.7"
   },
   "scripts": {
-    "startRedirect": "nodemon redirect.js",
     "startServer": "nodemon server.js"
   },
   "keywords": [],
