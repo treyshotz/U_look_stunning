@@ -79,3 +79,8 @@ https://www.npmjs.com/package/nodemon
 https://socket.io/docs/v4/index.html
 https://www.npmjs.com/package/uuid
 https://cmake.org/documentation/
+
+### Made by 
+[Simon Jensen](https://github.com/navyjumper)
+[Lars Brodin Østby](https://github.com/Larsbost)
+[Mads Lundegaard](https://github.com/treyshotz)
