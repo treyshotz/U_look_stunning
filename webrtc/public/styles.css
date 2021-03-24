@@ -1,8 +1,7 @@
 body{
     height: 100vh;
-    overflow: visible;
     background: #77ACA2;
-    background: linear-gradient(0deg, #031926f6 0%, #77ACA2 50%);
+    background: linear-gradient(90deg, #031926f6 0%, #77ACA2 50%);
 }
 
 main{
@@ -10,8 +9,8 @@ main{
 }
 
 .row{
-    --bs-gutter-x: 0;
     height: 100vh;
+    --bs-gutter-x: 0;
 }
 
 h1{
@@ -19,7 +18,6 @@ h1{
 }
 
 video {
-    background-color: black;
     width: 100%;
     height: 100%;
     display: block;
@@ -33,33 +31,38 @@ video {
 }
 
 #username-container{
-    position: absolute;
     width: 50%;
     left: 25%;
     top: 40%;
+    position: absolute;
 }
 
 .fullscreen{
-    position: absolute;
     width: 100vw;
     height: 100vh;
+    position: absolute;
+    z-index: 98;
 }
 
 .fullscreen label{
     font-size: x-large;
+    z-index: 99;
 }
 
 .overlay{
-    position: absolute;
-    text-align: center;
-    top: 0;
     width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    text-align: center;
     font-weight: bold;
-    color: whitesmoke;
     font-size: medium;
+    color: whitesmoke;
 }
 
 .chat-container{
+    max-height: 100vh;
+    min-height: 50vh;
     padding: 1em;
     background: rgb(0,47,80);
     background: linear-gradient(90deg, #031926 0%, #468189 100%);
