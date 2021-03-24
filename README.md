@@ -42,6 +42,10 @@ A framework that helps developing node.js based applications by automatically re
 ##### Socket io
 A library for web applications that enables real time communication between clients and servers. This was used for signalling.
 
+##### Ejs
+A tempating language that lets you generate html markup in javascript. We used this since it made it easy to send room id when rendering the view.
+
+
 ##### Peerjs
 An easy to use WebRTC peer-to-peer connection api. This was used for starting a peer server and peer connections, both video and chat, between users.
 
@@ -79,6 +83,7 @@ https://www.npmjs.com/package/nodemon
 https://socket.io/docs/v4/index.html
 https://www.npmjs.com/package/uuid
 https://cmake.org/documentation/
+https://ejs.co/#docs
 
 ### Made by 
 [Simon Jensen](https://github.com/navyjumper)
