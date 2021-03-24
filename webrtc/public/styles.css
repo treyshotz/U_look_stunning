@@ -30,6 +30,10 @@ video {
     grid-template-rows: repeat(3, 1fr);
 }
 
+.video-wrapper{
+    position: relative;
+}
+
 #username-container{
     width: 50%;
     left: 25%;
@@ -41,12 +45,12 @@ video {
     width: 100vw;
     height: 100vh;
     position: absolute;
-    z-index: 98;
+    z-index: 3;
 }
 
 .fullscreen label{
     font-size: x-large;
-    z-index: 99;
+    z-index: 4;
 }
 
 .overlay{
