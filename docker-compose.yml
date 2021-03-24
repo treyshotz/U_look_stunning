@@ -8,6 +8,13 @@ services:
     ports:
     - 3333:443
 
+  peerjs:
+    container_name: peerjs
+    build:
+      ./webrtc/cert
+    ports:
+    - 3223:9000
+
   stun:
     container_name: stun
     build:
