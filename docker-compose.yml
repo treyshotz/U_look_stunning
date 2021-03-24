@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  webrtc:
+    container_name: webrtc
+    build:
+      ./webrtc
+    ports:
+    - 3333:443
+
+  stun:
+    container_name: stun
+    build:
+      ./stun
+    ports:
+    - 4040:4040/udp
+
+
+
+

@@ -314,3 +314,6 @@ usernameInput.addEventListener('keypress', event => {
         enterRoom();
     }
 });
+=======
+    videoContainer.appendChild(container)
+}
