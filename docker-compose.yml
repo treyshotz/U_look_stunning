@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  signaling_server:
+    container_name: signaling_server
+    build:
+      ./webrtc
+    volumes:
+    - ./webrtc//usr/src/app
+    ports:
+    - 3000:80
+
+
+  peerjs:
+    container_name: peerjs
+
+    build:
+      ./webrtc/cert
+
+  stun:
+    image: gcc
+    container_name: stun
+
+

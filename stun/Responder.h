@@ -8,7 +8,7 @@
 
 #include <cstdint>
 #include <vector>
-#include <dns_util.h>
+#include <netinet/in.h>
 #include "Message.h"
 
 class Responder {
