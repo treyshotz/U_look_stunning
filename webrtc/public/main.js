@@ -1,14 +1,17 @@
-var socket = io('/');
+var socket = io('/'); //For communications with the server
+
 var videoContainer = document.getElementById("video-container");
 var chatInput = document.getElementById('chat-input')
 var chatBox = document.getElementById('chatbox');
 var usernameInput = document.getElementById('username-input');
+
 var chatConnections = [];
 var streamConnections = [];
 
 var myStream;
 var myUsername;
 var myPeer;
+
 
 /**
  * This function runs when the 'enter room' button is clicked
@@ -31,23 +34,9 @@ function enterRoom(){
 function start(){
 
     /*
-    Makes it possible to press enter when in the inputfield
+    Creates a new peer with a specified stunserver. By leaving id to
+    undefined it will generate one for us
     */
-    chatInput.addEventListener('keypress', event => {
-        if (event.key === 'Enter') {
-          sendMsg();
-        }
-    });
-
-    /*
-    Makes it possible to press enter when in the inputfield
-    */
-    usernameInput.addEventListener('keypress', event => {
-        if (event.key === 'Enter') {
-          enterRoom();
-        }
-    });
-
     myPeer = new Peer(undefined, {
         host: '/',
         port: '9000',
@@ -65,7 +54,7 @@ function start(){
 
     /*
     When peer object is created we ask for video and audio from the user.
-    we 
+    
     */
     myPeer.on('open', id => {
         navigator.mediaDevices.getUserMedia(constraints)
@@ -232,3 +221,22 @@ function addNewStream(video, stream, id, username) {
     
     videoContainer.appendChild(container)
 }
+
+
+/*
+Makes it possible to press enter when in the inputfield
+*/
+chatInput.addEventListener('keypress', event => {
+    if (event.key === 'Enter') {
+        sendMsg();
+    }
+});
+
+/*
+Makes it possible to press enter when in the inputfield
+*/
+usernameInput.addEventListener('keypress', event => {
+    if (event.key === 'Enter') {
+        enterRoom();
+    }
+});

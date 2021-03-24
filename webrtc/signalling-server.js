@@ -2,12 +2,7 @@ var express = require('express')
 var app = express()
 var fs = require('fs')
 
-// Set up a route to redirect http to https
-var http = express();
-http.get('*', (req, res) => {  
-    res.redirect('https://' + req.headers.host + req.url);
-})
-
+//Https server including ssl certificate
 var https = require('https')
 var httpsServer = https.createServer({
     key: fs.readFileSync('cert/key.pem'),
@@ -47,5 +42,4 @@ io.on('connection', socket => {
     })
 })
 
-http.listen(80);
 httpsServer.listen(443)
