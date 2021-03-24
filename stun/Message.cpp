@@ -6,10 +6,12 @@
 #include <iostream>
 
 
-uint32_t* Message::SendPrep() {
+std::vector<uint32_t> Message::SendPrep() {
 
     //TODO: set right size
-    uint32_t msg[13];
+    std::vector<uint32_t> msg;
+    msg.reserve(13);
+    //uint32_t msg[13];
     msg[0] = getTypeAndLength();
     msg[1] = getCookie();
     msg[2] = getTransactionId()[0];

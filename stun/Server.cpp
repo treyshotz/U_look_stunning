@@ -10,7 +10,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <iostream>
-#include <libc.h>
+#include <cstring>
+#include <pthread.h>
 
 
 //TODO: Is it right to set this limit on the buffer?
