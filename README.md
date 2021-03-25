@@ -1,6 +1,7 @@
 # U_look_stunning
 The stun server is available through a public ip address. The address is https://madslun.nerdvana.tihlde.org, and the port is 4040. If accessing this website through a browser you will be met with the signaling server, making it possible to video chat with other people. Our continuous deployment is unfortunately private, so due to security issues we will not provide credentials for accessing the CD.
 
+To run this project run `docker-compose up
 
 ### Introduction:
 U_look_stunning is a peer to peer video conferencing service where you can video and text chat with other users, using a self-implemented STUN server and signaling server. The stun server was written in C++ and the signaling server was written in Javascript. 
@@ -70,7 +71,7 @@ Through a friend of Mads, Torbjør Øverås, we got hands on a Tihlde server tha
 
 ### Installation:
 
-There is no installation needed as U_look_stunning utilizes docker to create images with all the necessary installation already baked in, as well as docker-compose to execute the containers. To build the project simply run the command docker-compose up in the U_look_stunning folder.
+There is no installation needed as U_look_stunning utilizes docker to create images with all the necessary installation already baked in, as well as docker-compose to execute the containers. To build the project simply run the `command docker-compose up` in the U_look_stunning folder.
 
 ### Testing:
 
