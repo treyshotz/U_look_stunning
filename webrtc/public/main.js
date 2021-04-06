@@ -42,7 +42,7 @@ function start(){
         port: '9000',
         config: {
             'iceServers': [
-                { url: 'stun:158.38.166.242:4040' },
+                { url: 'stun:158.38.166.243:4040' },
             ]
         }
     });
